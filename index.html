@@ -1,774 +1,2382 @@
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>시간을 파는 개발자, 구조를 만드는 개발자</title>
-<style>
-/* cspell:disable-file */
-/* webkit printing magic: print all background colors */
-html {
-	-webkit-print-color-adjust: exact;
-}
-* {
-	box-sizing: border-box;
-	-webkit-print-color-adjust: exact;
-}
-
-html,
-body {
-	margin: 0;
-	padding: 0;
-}
-@media only screen {
-	body {
-		margin: 2em auto;
-		max-width:95%;
-		color: rgb(55, 53, 47);
-	}
-}
-
-body {
-	line-height: 1.7;
-	white-space: pre-wrap;
-}
-
-a,
-a.visited {
-	color: inherit;
-	text-decoration: underline;
-}
-
-.pdf-relative-link-path {
-	font-size: 80%;
-	color: #444;
-}
-
-h1,
-h2,
-h3 {
-	letter-spacing: -0.01em;
-	line-height: 1.6;
-	font-weight: 600;
-	padding-bottom:0.5em;
-	margin-bottom: 0;
-}
-
-/* Override strong tags inside headings to maintain consistent weight */
-h1 strong,
-h2 strong,
-h3 strong {
-	font-weight: 600;
-}
-
-.page-title {
-	margin:0;
-	padding:0;
-	text-align: center;
-	font-size: 2.5rem;
-	font-weight: 700;
-	line-height: 100vh;
-	height:100vh;
-}
-
-h1 {
-	font-size: 1.875rem;
-	margin-top: 1.875rem;
-}
-
-h2 {
-	font-size: 1.5rem;
-	margin-top: 1.5rem;
-}
-
-h3 {
-	font-size: 1.25rem;
-	margin-top: 1.25rem;
-}
-
-.source {
-	border: 1px solid #ddd;
-	border-radius: 3px;
-	padding: 1.5em;
-	word-break: break-all;
-}
-
-.callout {
-	border-radius: 10px;
-	padding: 1rem;
-}
-
-figure {
-	margin: 1.25em 0;
-	page-break-inside: avoid;
-}
-
-figcaption {
-	opacity: 0.5;
-	font-size: 85%;
-	margin-top: 0.5em;
-}
-
-mark {
-	background-color: transparent;
-}
-
-.indented {
-	padding-left: 1.5em;
-}
-
-hr {
-	background: transparent;
-	display: block;
-	width: 100%;
-	height: 1px;
-	visibility: visible;
-	border: none;
-	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
-}
-
-img {
-	max-width: 100%;
-}
-
-@media only print {
-	img {
-		max-height: 100vh;
-		object-fit: contain;
-	}
-}
-
-@page {
-	margin: 1in;
-}
-
-.collection-content {
-	font-size: 0.875rem;
-}
-
-.collection-content td {
-	white-space: pre-wrap;
-	word-break: break-word;
-}
-
-.column-list {
-	display: flex;
-	gap: 46px;
-}
-
-.column {
-	min-width: 0;
-	overflow: hidden;
-}
-
-.column > *:first-child {
-	margin-top: 0;
-}
-
-.table_of_contents-item {
-	display: block;
-	font-size: 0.875rem;
-	line-height: 1.3;
-	padding: 0.125rem;
-}
-
-.table_of_contents-indent-1 {
-	margin-left: 1.5rem;
-}
-
-.table_of_contents-indent-2 {
-	margin-left: 3rem;
-}
-
-.table_of_contents-indent-3 {
-	margin-left: 4.5rem;
-}
-
-.table_of_contents-link {
-	text-decoration: none;
-	opacity: 0.7;
-	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
-}
-
-table,
-th,
-td {
-	border: 1px solid rgba(55, 53, 47, 0.09);
-	border-collapse: collapse;
-}
-
-table {
-	border-left: none;
-	border-right: none;
-}
-
-th,
-td {
-	font-weight: normal;
-	padding: 0.25em 0.5em;
-	line-height: 1.5;
-	min-height: 1.5em;
-	text-align: left;
-}
-
-th {
-	color: rgba(55, 53, 47, 0.6);
-}
-
-ol,
-ul {
-	margin: 0;
-	margin-block-start: 0.6em;
-	margin-block-end: 0.6em;
-}
-
-li > ol:first-child,
-li > ul:first-child {
-	margin-block-start: 0.6em;
-}
-
-ul > li {
-	list-style: disc;
-}
-
-ul.to-do-list {
-	padding-inline-start: 0;
-}
-
-ul.to-do-list > li {
-	list-style: none;
-}
-
-.to-do-children-checked {
-	text-decoration: line-through;
-	opacity: 0.375;
-}
-
-ul.toggle > li {
-	list-style: none;
-}
-
-ul {
-	padding-inline-start: 1.7em;
-}
-
-ul > li {
-	padding-left: 0.1em;
-}
-
-ol {
-	padding-inline-start: 1.6em;
-}
-
-ol > li {
-	padding-left: 0.2em;
-}
-
-.mono ol {
-	padding-inline-start: 2em;
-}
-
-.mono ol > li {
-	text-indent: -0.4em;
-}
-
-.toggle {
-	padding-inline-start: 0em;
-	list-style-type: none;
-}
-
-/* Indent toggle children */
-.toggle > li > details {
-	padding-left: 1.7em;
-}
-
-.toggle > li > details > summary {
-	margin-left: -1.1em;
-}
-
-.selected-value {
-	display: inline-block;
-	padding: 0 0.5em;
-	background: rgba(206, 205, 202, 0.5);
-	border-radius: 3px;
-	margin-right: 0.5em;
-	margin-top: 0.3em;
-	margin-bottom: 0.3em;
-	white-space: nowrap;
-}
-
-.collection-title {
-	display: inline-block;
-	margin-right: 1em;
-}
-
-.page-description {
-	margin-bottom: 2em;
-}
-
-.simple-table {
-	margin-top: 1em;
-	font-size: 0.875rem;
-	empty-cells: show;
-}
-.simple-table td {
-	height: 29px;
-	min-width: 120px;
-}
-
-.simple-table th {
-	height: 29px;
-	min-width: 120px;
-}
-
-.simple-table-header-color {
-	background: rgb(247, 246, 243);
-	color: black;
-}
-.simple-table-header {
-	font-weight: 500;
-}
-
-time {
-	opacity: 0.5;
-}
-
-.icon {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	max-width: 1.2em;
-	max-height: 1.2em;
-	text-decoration: none;
-	vertical-align: text-bottom;
-	margin-right: 0.5em;
-}
-
-img.icon {
-	border-radius: 3px;
-}
-
-.callout img.notion-static-icon {
-	width: 1em;
-	height: 1em;
-}
-
-.callout p {
-	margin: 0;
-}
-
-.callout h1,
-.callout h2,
-.callout h3 {
-	margin: 0 0 0.6rem;
-}
-
-.user-icon {
-	width: 1.5em;
-	height: 1.5em;
-	border-radius: 100%;
-	margin-right: 0.5rem;
-}
-
-.user-icon-inner {
-	font-size: 0.8em;
-}
-
-.text-icon {
-	border: 1px solid #000;
-	text-align: center;
-}
-
-.page-cover-image {
-	display: block;
-	object-fit: cover;
-	width: 100%;
-	max-height: 30vh;
-}
-
-.page-header-icon {
-	font-size: 3rem;
-	margin-bottom: 1rem;
-}
-
-.page-header-icon-with-cover {
-	margin-top: -0.72em;
-	margin-left: 0.07em;
-}
-
-.page-header-icon img {
-	border-radius: 3px;
-}
-
-.link-to-page {
-	margin: 1em 0;
-	padding: 0;
-	border: none;
-	font-weight: 500;
-}
-
-p > .user {
-	opacity: 0.5;
-}
-
-td > .user,
-td > time {
-	white-space: nowrap;
-}
-
-input[type="checkbox"] {
-	transform: scale(1.5);
-	margin-right: 0.6em;
-	vertical-align: middle;
-}
-
-p {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-}
-
-.image {
-	border: none;
-	margin: 1.5em 0;
-	padding: 0;
-	border-radius: 0;
-	text-align: center;
-}
-
-.code,
-code {
-	background: rgba(135, 131, 120, 0.15);
-	border-radius: 3px;
-	padding: 0.2em 0.4em;
-	border-radius: 3px;
-	font-size: 85%;
-	tab-size: 2;
-}
-
-code {
-	color: #eb5757;
-}
-
-.code {
-	padding: 1.5em 1em;
-}
-
-.code-wrap {
-	white-space: pre-wrap;
-	word-break: break-all;
-}
-
-.code > code {
-	background: none;
-	padding: 0;
-	font-size: 100%;
-	color: inherit;
-}
-
-blockquote {
-	font-size: 1em;
-	margin: 1em 0;
-	padding-left: 1em;
-	border-left: 3px solid rgb(55, 53, 47);
-}
-
-blockquote.quote-large {
-	font-size: 1.25em;
-}
-
-.bookmark {
-	text-decoration: none;
-	max-height: 8em;
-	padding: 0;
-	display: flex;
-	width: 100%;
-	align-items: stretch;
-}
-
-.bookmark-title {
-	font-size: 0.85em;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	height: 1.75em;
-	white-space: nowrap;
-}
-
-.bookmark-text {
-	display: flex;
-	flex-direction: column;
-}
-
-.bookmark-info {
-	flex: 4 1 180px;
-	padding: 12px 14px 14px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
-
-.bookmark-image {
-	width: 33%;
-	flex: 1 1 180px;
-	display: block;
-	position: relative;
-	object-fit: cover;
-	border-radius: 1px;
-}
-
-.bookmark-description {
-	color: rgba(55, 53, 47, 0.6);
-	font-size: 0.75em;
-	overflow: hidden;
-	max-height: 4.5em;
-	word-break: break-word;
-}
-
-.bookmark-href {
-	font-size: 0.75em;
-	margin-top: 0.25em;
-}
-
-.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
-.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
-.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
-.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
-.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
-.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
-.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
-.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
-.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
-.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
-.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
-.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
-.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
-.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
-.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
-.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
-.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
-.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
-.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
-.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
-.highlight-default {
-	color: rgba(44, 44, 43, 1);
-}
-.highlight-gray {
-	color: rgba(125, 122, 117, 1);
-	fill: rgba(125, 122, 117, 1);
-}
-.highlight-brown {
-	color: rgba(159, 118, 90, 1);
-	fill: rgba(159, 118, 90, 1);
-}
-.highlight-orange {
-	color: rgba(210, 123, 45, 1);
-	fill: rgba(210, 123, 45, 1);
-}
-.highlight-yellow {
-	color: rgba(203, 148, 52, 1);
-	fill: rgba(203, 148, 52, 1);
-}
-.highlight-teal {
-	color: rgba(80, 148, 110, 1);
-	fill: rgba(80, 148, 110, 1);
-}
-.highlight-blue {
-	color: rgba(56, 125, 201, 1);
-	fill: rgba(56, 125, 201, 1);
-}
-.highlight-purple {
-	color: rgba(154, 107, 180, 1);
-	fill: rgba(154, 107, 180, 1);
-}
-.highlight-pink {
-	color: rgba(193, 76, 138, 1);
-	fill: rgba(193, 76, 138, 1);
-}
-.highlight-red {
-	color: rgba(207, 81, 72, 1);
-	fill: rgba(207, 81, 72, 1);
-}
-.highlight-default_background {
-	color: rgba(44, 44, 43, 1);
-}
-.highlight-gray_background {
-	background: rgba(42, 28, 0, 0.07);
-}
-.highlight-brown_background {
-	background: rgba(139, 46, 0, 0.086);
-}
-.highlight-orange_background {
-	background: rgba(224, 101, 1, 0.129);
-}
-.highlight-yellow_background {
-	background: rgba(211, 168, 0, 0.137);
-}
-.highlight-teal_background {
-	background: rgba(0, 100, 45, 0.09);
-}
-.highlight-blue_background {
-	background: rgba(0, 124, 215, 0.094);
-}
-.highlight-purple_background {
-	background: rgba(102, 0, 178, 0.078);
-}
-.highlight-pink_background {
-	background: rgba(197, 0, 93, 0.086);
-}
-.highlight-red_background {
-	background: rgba(223, 22, 0, 0.094);
-}
-.block-color-default {
-	color: inherit;
-	fill: inherit;
-}
-.block-color-gray {
-	color: rgba(125, 122, 117, 1);
-	fill: rgba(125, 122, 117, 1);
-}
-.block-color-brown {
-	color: rgba(159, 118, 90, 1);
-	fill: rgba(159, 118, 90, 1);
-}
-.block-color-orange {
-	color: rgba(210, 123, 45, 1);
-	fill: rgba(210, 123, 45, 1);
-}
-.block-color-yellow {
-	color: rgba(203, 148, 52, 1);
-	fill: rgba(203, 148, 52, 1);
-}
-.block-color-teal {
-	color: rgba(80, 148, 110, 1);
-	fill: rgba(80, 148, 110, 1);
-}
-.block-color-blue {
-	color: rgba(56, 125, 201, 1);
-	fill: rgba(56, 125, 201, 1);
-}
-.block-color-purple {
-	color: rgba(154, 107, 180, 1);
-	fill: rgba(154, 107, 180, 1);
-}
-.block-color-pink {
-	color: rgba(193, 76, 138, 1);
-	fill: rgba(193, 76, 138, 1);
-}
-.block-color-red {
-	color: rgba(207, 81, 72, 1);
-	fill: rgba(207, 81, 72, 1);
-}
-.block-color-default_background {
-	color: inherit;
-	fill: inherit;
-}
-.block-color-gray_background {
-	background: rgba(240, 239, 237, 1);
-}
-.block-color-brown_background {
-	background: rgba(245, 237, 233, 1);
-}
-.block-color-orange_background {
-	background: rgba(251, 235, 222, 1);
-}
-.block-color-yellow_background {
-	background: rgba(249, 243, 220, 1);
-}
-.block-color-teal_background {
-	background: rgba(232, 241, 236, 1);
-}
-.block-color-blue_background {
-	background: rgba(229, 242, 252, 1);
-}
-.block-color-purple_background {
-	background: rgba(243, 235, 249, 1);
-}
-.block-color-pink_background {
-	background: rgba(250, 233, 241, 1);
-}
-.block-color-red_background {
-	background: rgba(252, 233, 231, 1);
-}
-.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
-.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
-.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
-.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
-.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
-.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
-.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
-.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
-.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
-.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
-
-.checkbox {
-	display: inline-flex;
-	vertical-align: text-bottom;
-	width: 16;
-	height: 16;
-	background-size: 16px;
-	margin-left: 2px;
-	margin-right: 5px;
-}
-
-.checkbox-on {
-	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
-}
-
-.checkbox-off {
-	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
-}
-
-</style></head><body><article id="25ff6e9d-1929-80f8-b9bc-c15f78f36f6c" class="page sans"><header><h1 class="page-title" dir="auto">시간을 파는 개발자, 구조를 만드는 개발자</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8046-8a27-f8d83a96c88c" class="">
-</p></div><div style="display:contents" dir="ltr"><figure id="32df6e9d-1929-807b-bf6e-f45017646dd4" class="image"><a href="cover.png"><img style="width:704px" src="cover.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-808d-b12c-fe62d4bcaf9a" class="">
-</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8011-bf6f-ec374764db9c" class="">
-</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8033-8508-cd0f31297c15" class="">
-</p></div><div style="display:contents" dir="auto"><h2 id="32df6e9d-1929-80dd-aee1-f647a4b95e6a" class="">목차</h2></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80c3-ac8f-f343c81cb6c3" class="bulleted-list"><li style="list-style-type:disc">챕터 1. 우리는 생각한다</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80c6-bb3f-d814526031e4" class="bulleted-list"><li style="list-style-type:disc">챕터 2. 왜 우리는 구조를 배우지 못했는가</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80ec-ba77-cc74ba3d7f01" class="bulleted-list"><li style="list-style-type:disc">챕터 3. 돈은 어떻게 만들어지는가</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80e0-bbf4-c2d3834e5392" class="bulleted-list"><li style="list-style-type:disc">챕터 4. 개발자는 어떻게 구조를 만들 수 있는가</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-8052-a45c-d53be4992b4f" class="bulleted-list"><li style="list-style-type:disc">챕터 5. 우리는 왜 실행하지 못하는가</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-8074-a8e7-ef36feab87ee" class="bulleted-list"><li style="list-style-type:disc">챕터 6. 구조를 바꾸는 현실적인 방법</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-802f-bbd1-e1d3e8e671ba" class="bulleted-list"><li style="list-style-type:disc">챕터 7. 개발자가 만들 수 있는 돈의 구조</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80d4-ad78-c5a1dff2cbe3" class="bulleted-list"><li style="list-style-type:disc">챕터 8. 결국 우리는 어떤 삶을 원하는가</li></ul></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ba-a926-f512905ab6aa" class="">
-</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c5-8f28-dfff17108036" class="">
-</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a7-81e0-e8ca67372112" class="">
-</p></div><div style="display:contents" dir="auto"><h2 id="32df6e9d-1929-8072-81aa-cb406a4fc5e8" class="">프롤로그</h2></div><div style="display:contents" dir="auto"><h4 id="32df6e9d-1929-8022-88b0-fa7db31ba7dd" class=""><mark class="highlight-blue">삶을 설계하는 개발자</mark><br/></h4></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8051-b123-c5be378711c0" class="">어떠한 이유에서인지<br/>종교나 가족에 대한 이야기는 의도적으로 제외했다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a2-a0bd-ef67b2fc7d70" class="">그 편이 더 공평하고,<br/>조금 더 인간적인 이야기로 다가갈 수 있다고 생각했기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c5-84a7-c27f5495eb41" class="">개발자의 관점에서 쓴 글이니,<br/>이 선택 역시 이해될 것이라 믿는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801a-8f65-e91e886a0ce9" class="">나는 INTJ이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8005-83dd-eff6f5cb46b7" class=""><mark class="highlight-teal"><mark class="highlight-default_background"><strong>Developer - dexter.</strong></mark></mark></p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8062-a0f6-e287e39bb565" class="">
-</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e4-bdf2-d1c7caad9169" class="">
-</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a8-98dc-c9d51f76d65a" class="">
-</p></div><div style="display:contents" dir="auto"><h1 id="32df6e9d-1929-80aa-a46c-d28fce517c29" class="">챕터1. 우리는 생각한다.</h1></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f1-94d6-ce78cb672d8d" class="">
-</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809d-b56a-eee820aac9df" class="">우리는 끊임없이 생각한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8083-babb-fdaee3d804ad" class="">내가 하는 일이<br/>내 삶에 얼마나 의미 있게 반영되는지,<br/>혹은 얼마나 허무하게 흘러가고 있는지에 대해.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8032-a684-ddab9ca4c67f" class="">
-</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8055-93cb-cb2c70ed782d" class="">물론 알고 있다.<br/>삶의 희로애락이 오직 ‘일’로만 결정되지 않는다는 것을.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80af-838c-e4b820effba4" class="">그럼에도 불구하고,<br/>자신이 들인 시간과 노력이<br/>얼마나 삶을 윤택하게 만드는지에 대한 질문은<br/>인류가 오랫동안 붙잡고 있는 고민이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b8-a258-d336ea845ead" class="">그래서 질문은 결국 하나로 좁혀진다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80be-9ec8-e8fbfb4ce688" class="">우리는 왜 이렇게까지 일을 하면서도<br/>그 결과가 삶의 여유로 이어지지 않는 걸까.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-804e-9c23-dc8e395510b9" class="">특히 개발자에게 이 괴리는 더 뚜렷하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c1-bd65-f142eb67a180" class="">끊임없이 기술을 배우고,<br/>문제를 해결하며,<br/>누군가의 비즈니스를 성장시키고 있음에도 불구하고<br/>정작 자신의 삶은 크게 달라지지 않는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8001-9ece-e45259aa48c2" class="">많이 만들었지만, 많이 남지 않는다.<br/>열심히 일했지만, 자유로워지지 않는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801f-9601-dca2e4b0735a" class="">이 이상한 구조는 어디에서 시작된 걸까.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8003-9fa3-c25aba6b6fd9" class="">
-</p></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-8064-a911-c0bfc1a14e27" class="bulleted-list"><li style="list-style-type:disc"> <strong>프리랜서와 회사에서의 생활</strong></li></ul></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f6-8d92-eb1365995dc6" class="">어느 순간부터 이런 생각이 들기 시작했다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-800e-a824-c48844948be8" class="">회사를 다니며 10년 넘게 개발을 해오면서<br/>내 실력은 분명히 좋아졌다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80bc-8d7a-f2f4b2cbeeb3" class="">더 빠르게 만들 수 있게 되었고,<br/>더 복잡한 문제도 해결할 수 있게 되었다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8007-a2e3-e6a4cb6e6a40" class="">하지만 이상하게도<br/>삶이 그만큼 나아졌다는 느낌은 들지 않았다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ae-a7fa-f785a5db8e41" class="">업무 능력이 올라갈수록<br/>책임과 피로도는 함께 증가했고,<br/>지출 역시 자연스럽게 늘어났다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8046-b5f9-cc1147d40596" class="">이사로 출퇴근 거리는 더 멀어졌고,<br/>물가 상승까지 겹치면서<br/>열심히 일해도 여유는 쉽게 만들어지지 않았다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b7-b46b-cb5c79b33d46" class="">이런 흐름 속에서<br/>나는 자연스럽게 다른 선택지를 바라보게 되었다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ab-a707-dc5d33e17570" class="">프리랜서.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a3-8b7f-c3d3ea3e1de6" class="">그 매력은 단순했다.<br/>회사에 가지 않아도 된다는 것,<br/>그리고 눈치를 보지 않아도 된다는 것.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a9-b7fd-f6738098ef1e" class="">정해진 시간에 출근하지 않아도 되고,<br/>같은 자리에 묶여 있을 필요도 없다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80df-bc7f-c699a99979f2" class="">눈이 떠지는 시간에 일어나<br/>원하는 카페에서 일을 시작하는 것만으로도<br/>전혀 다른 만족감이 느껴졌다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801d-a2c6-e06b0ce20cae" class="">집에 돌아오는 시간은 비슷했지만,<br/>하루를 보내는 방식이 바뀌자<br/>삶의 만족도는 분명히 높아졌다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f9-ad95-f9979f5bd3c4" class="">사람은 지칠 때쯤<br/>새로운 활력이 필요하다는 것을 알게 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8089-816a-f3243deff972" class="">같은 일을 하더라도<br/>구조가 바뀌면 전혀 다른 감각으로 받아들여진다.<br/>그 변화만으로도 다시 버틸 수 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e2-a3a0-d9ca3c1e2179" class="">그렇게 1년, 2년이 흘렀다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8039-9017-eba8a8e2284c" class="">다시 안정감을 느끼기 시작했다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8096-b56c-f4439ee91ec9" class="">하지만 그 안정감은 오래가지 않았다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a5-8bbd-f56f760a7a4c" class="">또 다른 질문이 떠올랐다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8002-958f-d404bbf20e9a" class="">나는 결국,<br/>시간을 써야만 돈을 벌 수 있는 구조 안에 있는 것은 아닐까.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a3-a9ea-d2056ff3d063" class="">
-</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="32df6e9d-1929-8023-b4d8-f014657aa7ce" class="code code-wrap"><code class="language-PHP" style="white-space:pre-wrap;word-break:break-all">while ($energy &gt; 0 || $caffeine &gt; 0) {
-  $money += ($work_intensity * $time);
-  $energy -= 10;  // 기력 감소
-  if ($energy &lt;= 0 &amp;&amp; $coffee_count &lt; 5) {
-    drink_coffee(); // 카페인으로 에너지 강제 펌핑
-    $caffeine += 50;
-    $money -= min_max(2000, 5000); // 커피값 지출 (배보다 배꼽이 더 클지도?)
-  }
-  if ($time &gt; $regular_work_hour) {
-    $mental_health--; // 야근은 정신 건강에 해롭습니다.
-  }
-}</code></pre></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d5-ab7e-cc4debd4d0ac" class="">
-</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8023-8205-dd26090cf978" class="">일은 결국<br/>시간과 에너지를 넣으면 돈이 나오는 구조다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ef-87d7-e809225438f7" class="">시간이 흐르면 돈은 소비되고,<br/>몸과 정신은 점점 소모된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-805d-9a5d-d73dab3db28c" class="">하지만 돈을 벌기 위해서는<br/>멈출 수 없다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-800a-aea7-ebd20cd9e8b3" class="">멈추는 순간,<br/>모든 것이 멈춘다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8091-81f2-e4176988167c" class="">많은 개발자들이 믿는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e5-9ce7-e08344c77d80" class="">실력이 올라가면<br/>수입도 자연스럽게 올라갈 것이라고.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a3-8721-eb0ef0897bc5" class="">틀린 말은 아니다.<br/>초기에는 분명히 그렇다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-804b-b165-ff202aeb1e81" class="">하지만 어느 순간부터<br/>이 공식은 더 이상 작동하지 않는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f9-9c96-ea1f20bd244d" class="">아무리 실력이 올라가도<br/>하루의 시간은 늘어나지 않는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-807a-b0d0-caaf2b62f08c" class="">결국 우리는 같은 구조 안에서<br/>단가만 올리고 있을 뿐이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c7-be0f-dbbb364deefb" class="">시간을 더 쓰고,<br/>몸을 더 혹사시키고,<br/>더 많은 책임을 떠안으면서.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b7-8e58-fe5cf9e2b518" class="">그렇게 만들어진 수입은<br/>언제든 멈출 수 있는 수입이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ac-84e6-d6b67aeaff08" class="">여기서 차이가 생긴다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80df-a103-c51ac1e0b364" class="">누군가는 여전히<br/>자신의 시간을 팔고 있고,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801e-bb2d-e4ab9e323ccc" class="">누군가는<br/>시간을 팔지 않아도 돌아가는 구조를 만든다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e9-83cd-d3aeed395351" class="">이 차이는 직업의 차이가 아니다.<br/>구조의 차이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8087-a13c-c206086dc51d" class="">개발자는 문제를 해결하는 사람이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8000-abb7-da178ec5b6c3" class="">하지만 이상하게도<br/>자신의 수익 구조에 대해서는<br/>문제로 인식하지 않는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8057-b647-c647cbabbd4d" class="">더 좋은 코드를 짜는 데에는 집착하면서도<br/>더 나은 구조를 만드는 데에는 무심하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802c-9c04-d9bda5b49451" class="">생각해보면 이상하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8081-8bda-fa12a27418a7" class="">자동화를 만들고,<br/>시스템을 만들고,<br/>반복을 줄이는 일을 하는 사람들이</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809e-b418-f9fbda93326a" class="">정작 자신의 삶에서는<br/>가장 비효율적인 구조에 머물러 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b9-a97f-e51e5899a601" class="">우리는 이미 알고 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f5-83fc-d9e352d316e5" class="">이 구조를 벗어나지 않는 한<br/>아무리 오래, 열심히 일해도<br/>결과는 크게 달라지지 않는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b9-97e5-cab2676d21ca" class="">그래서 질문은 다시 돌아온다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c4-80d2-f5a0b822507b" class="">왜 우리는 이 구조를 벗어나지 못하는가.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e2-9d6d-d1b29e75033c" class="">우리는 기술을 배우는 데에는 익숙하지만,<br/>구조를 설계하는 법은 배우지 못했다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f3-8d74-e15e281c413e" class="">
-</p></div><div style="display:contents" dir="auto"><h1 id="32df6e9d-1929-80ae-83eb-cbed045884d6" class="">챕터2. 왜 우리는 구조를 배우지 못했는가</h1></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f9-8cfd-fc1d65eb8bc7" class="">우리는 분명히 배워왔다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d2-9fc0-f6b22efed525" class="">문제를 해결하는 법을,<br/>더 효율적인 코드를 짜는 법을,<br/>더 빠르게 결과를 만들어내는 방법을.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-808b-a7af-fae189dfc2d5" class="">하지만 단 한 가지는 배우지 못했다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f8-b641-cff2ffcd29d5" class="">구조를 설계하는 법.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-806a-ba09-c810212275cc" class="">우리가 처음 개발을 배울 때,<br/>가장 먼저 접하는 것은 문법이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f9-9fcc-eec2651da247" class="">변수, 조건문, 반복문.<br/>그리고 함수와 클래스.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-800e-a12e-c20ad9ffdfb1" class="">조금 더 나아가면<br/>프레임워크를 배우고,<br/>아키텍처를 배우고,<br/>협업 방식을 배운다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-807a-82b4-f1777f4b2fec" class="">하지만 이 모든 것은<br/>결국 하나를 위한 것이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8085-931a-f59787630694" class="">“주어진 문제를 해결하는 것.”</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8038-baff-d208aebaeb3c" class="">문제는 여기서 시작된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a8-b42c-dadab71f30cd" class="">우리는 항상<br/>“문제가 주어지는 입장”에 익숙해져 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-804f-aaa9-df56a4bf23e0" class="">누군가가 요구사항을 정리해주고,<br/>누군가가 방향을 결정해주고,<br/>우리는 그 안에서 최적의 해답을 만들어낸다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8077-8f33-e616956d05da" class="">이 과정은 효율적이다.<br/>그리고 안정적이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8069-ba87-e5afda403681" class="">하지만 동시에<br/>아주 위험한 구조이기도 하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8050-82b8-f76381fbc6ed" class="">왜냐하면 이 구조 안에서는<br/>우리가 스스로 질문을 만들 필요가 없기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8013-a901-fa13dc275dfd" class="">무엇을 만들어야 하는지,<br/>왜 만들어야 하는지,<br/>이걸 만들어서 무엇을 얻어야 하는지.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8022-ab6f-f17d3c8f620d" class="">이 질문들은 대부분<br/>우리의 역할 밖에 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-804d-88cf-edd594d7a3b3" class="">우리는 그저<br/>주어진 문제를 잘 해결하는 사람으로 남는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8047-a432-c1e0ec7cf8d1" class="">그래서 시간이 지나도<br/>우리는 여전히 같은 방식으로 일한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8044-ab01-ff9d537d429d" class="">더 빠르게,<br/>더 정확하게,<br/>더 많이.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8004-97e5-ed5c0a6e69d4" class="">하지만 방향은 여전히<br/>누군가에 의해 결정된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d5-bf79-c3b3fb82a663" class="">이 차이는 작아 보이지만<br/>결과에서는 극단적으로 갈린다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a1-a7db-f3f19863f363" class="">누군가는 문제를 해결하면서 돈을 벌고,<br/>누군가는 문제 자체를 만들어내면서 돈을 번다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-807e-882d-f11b44a9a279" class="">이 둘은 전혀 다른 게임이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802a-a2df-e528b9464ce3" class="">문제를 해결하는 사람은<br/>항상 시간과 맞바꾼다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-804a-879a-cee5fe40828e" class="">하지만 문제를 만드는 사람은<br/>구조를 만든다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-806e-8189-c8a7f19ce9ab" class="">구조는 반복된다.<br/>그리고 반복은 돈을 만든다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801b-8cbf-ebcf0adb0d17" class="">여기서 우리는 한 가지 착각을 하게 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809d-82a2-dc70232e3208" class="">“더 잘 만들면, 더 많이 벌 수 있다.”</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8009-9011-f07848abb099" class="">부분적으로는 맞다.<br/>하지만 구조를 바꾸지 않는 한<br/>그 증가에는 한계가 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80df-85a7-c8448efae6ad" class="">아무리 뛰어난 개발자라도<br/>하루 24시간이라는 제한에서 벗어날 수는 없다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801b-b4d5-d19cffdc57f1" class="">그래서 우리는<br/>결국 같은 벽에 부딪힌다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8026-ac80-d64c2732ce87" class="">더 이상 시간을 늘릴 수 없는 순간.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8024-8f4b-ee830bad3030" class="">그때서야<br/>우리는 처음으로 생각하게 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-807f-b212-ca11ca081a2d" class="">“다른 방법은 없는 걸까.”</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809c-928a-d3feb91457ed" class="">하지만 이미 우리는<br/>오랫동안 하나의 방식에 익숙해져 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8004-bbc7-eda22a4fe087" class="">누군가의 문제를 해결하고,<br/>그 대가로 돈을 받는 방식.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809f-8388-e5776e21a2b6" class="">이 구조는 너무 자연스럽기 때문에<br/>의심조차 하지 않는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c3-a065-e4ba8a0e1132" class="">그리고 이것이<br/>우리가 구조를 배우지 못한 이유다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8099-b7b1-d830b693605b" class="">배운 적이 없어서가 아니라,<br/>필요했던 적이 없었기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802e-8da6-c8a9ff162912" class="">
-</p></div><div style="display:contents" dir="auto"><h1 id="32df6e9d-1929-8085-8a39-ee14d93fe9fd" class="">챕터3. 돈은 어떻게 만들어지는가</h1></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8074-9da6-d281845b0162" class="">우리는 돈을 번다고 생각한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-806f-8359-cb06b2a67e42" class="">하지만 정확히 말하면,<br/>우리는 돈을 “만든다”기보다<br/>특정한 방식으로 “교환”하고 있을 뿐이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8016-bcc7-ff5c2655c1fb" class="">대부분의 사람들은<br/>자신의 시간과 노동을<br/>돈과 교환한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801e-b4d3-d25168b02333" class="">이 구조는 단순하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c3-8a78-c0d918b70ba2" class="">시간을 쓰면 돈이 생기고,<br/>시간을 멈추면 돈도 멈춘다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8099-9ea0-db68e5383735" class="">이것이 우리가 가장 익숙한 방식이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e3-89a9-f95ebe11fa94" class="">그리고 개발자 역시<br/>이 구조 안에 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8058-bfb4-e1a5977a9863" class="">조금 더 많이 벌기 위해서는<br/>더 오래 일하거나,<br/>더 높은 단가를 받아야 한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8096-94ae-f5010f7ef834" class="">하지만 이 방식에는<br/>명확한 한계가 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8018-8d08-fd4e76288c43" class="">시간은 늘릴 수 없다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8003-a7b5-eae40aedabae" class="">그래서 우리는<br/>다른 방식의 존재를 알아야 한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8047-849e-fa33b25166d6" class="">돈이 만들어지는 방식은<br/>크게 세 가지로 나눌 수 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802c-bd87-d05f29ed248d" class="">첫 번째는<br/>노동 기반 수익이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a4-98ae-cedb59fd6cc7" class="">가장 직관적이고,<br/>가장 흔한 방식이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e0-ba0a-ce4749fa1c67" class="">일을 하면 돈을 받는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e2-95f4-d4b1d5b9c748" class="">하지만 이 구조는<br/>반드시 한계를 가진다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801b-a140-e68872ea486e" class="">시간에 묶여 있기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f6-a661-d444d6722a8b" class="">두 번째는<br/>자산 기반 수익이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809e-9b04-c76f74ab24fe" class="">자산이 돈을 만들어낸다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8008-9bb5-f93af1a24c76" class="">부동산, 주식,<br/>혹은 콘텐츠와 같은 것들이 여기에 포함된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8040-b3a7-e04a3516e26f" class="">이 구조에서는<br/>내가 직접 움직이지 않아도<br/>수익이 발생할 수 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8021-bf60-cf9fa7095cd1" class="">하지만 자산을 만들기 위해서는<br/>초기 자본이나 시간이 필요하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802a-959c-c7bd9b94d82d" class="">그리고 대부분의 사람들은<br/>이 단계까지 오지 못한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8004-9e63-fa20b80e9a80" class="">그래서 더 중요한 것은<br/>세 번째다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c8-8b01-f46904cae462" class="">세 번째는<br/>시스템 기반 수익이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e4-adfb-f5d7c7f3143d" class="">이건 조금 다르다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80cc-bdf2-f633a4dd414f" class="">처음에는<br/>시간과 노력이 들어간다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8090-bca1-c44bcbd4ca90" class="">하지만 한 번 구조가 만들어지면<br/>그 이후부터는 반복된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-808d-b10e-dfdfb6b08a85" class="">예를 들어,<br/>한 번 만든 서비스,<br/>한 번 만들어놓은 코드,<br/>한 번 구축된 흐름.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-805c-80bd-ebea80ac027a" class="">이것들은<br/>내가 계속 일하지 않아도<br/>가치를 만들어낸다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803e-9347-fb4d01f6c2b8" class="">여기서 중요한 것은<br/>“반복 가능성”이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b5-b6ec-db473b0a46d3" class="">노동은 반복될수록<br/>피로가 쌓인다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d5-8167-c2f4c4a40337" class="">하지만 시스템은 반복될수록<br/>효율이 쌓인다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d3-9174-e6710b098ee7" class="">이 차이는<br/>시간이 지날수록 더 크게 벌어진다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802e-8f83-c71c2d397e3e" class="">개발자는<br/>이 구조를 만들 수 있는 몇 안 되는 직업이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8034-960c-eb6f9a708d1d" class="">그럼에도 불구하고<br/>대부분의 개발자는<br/>여전히 첫 번째 방식에 머물러 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80eb-9e61-f684b4036d2e" class="">왜일까.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8067-8b22-d38bb70e33b7" class="">우리는 이미 알고 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d6-82c8-e14511eba0f6" class="">문제를 해결하는 법은 배웠지만,<br/>구조를 만드는 법은 배우지 못했기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8080-a1f0-e64a78a511ea" class="">그래서 다시 질문해야 한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f2-b1d2-c37543dbf633" class="">나는 지금<br/>어떤 방식으로 돈을 만들고 있는가.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8034-9860-cdc57b6ca218" class="">그리고 더 중요한 질문.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f6-abe4-fe95b8e29577" class="">이 구조는<br/>나를 어디로 데려갈 것인가.</p></div><div style="display:contents" dir="auto"><h1 id="32df6e9d-1929-8064-b1d8-fac411fc383a" class="">챕터4. 개발자는 어떻게 구조를 만들 수 있는가</h1></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80bf-8c59-d90d83a0a548" class="">구조를 만든다는 것은<br/>거창한 일이 아니다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803e-bb05-f255cf7b9300" class="">처음부터 대단한 서비스를 만들 필요도 없고,<br/>큰 자본이 필요한 것도 아니다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8067-810d-f2eff27a066f" class="">구조는 생각보다 단순한 곳에서 시작된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f9-a274-c3663c093405" class="">우리가 반복하고 있는 일,<br/>여러 번 비슷하게 만들어본 기능,<br/>매번 비슷하게 해결했던 문제들.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8031-88da-ee8eeee02150" class="">이미 우리는<br/>수많은 “반복”을 경험하고 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8009-a541-e47d0efb445d" class="">문제는 이것을<br/>그때그때 해결하고 끝낸다는 점이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802c-9a9a-f40b8344751b" class="">구조를 만든다는 것은<br/>이 반복을 “자산으로 바꾸는 것”이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809c-b701-e7a1d0cc2b1a" class="">다시 말해,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802f-b9aa-c5e93bbdbba8" class="">한 번 만든 것을<br/>여러 번 사용할 수 있게 만드는 것.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803c-8aec-ea8c162b8573" class="">이 차이가<br/>노동과 구조를 가르는 기준이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-804a-b55f-f2ac14ca699f" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-80cd-b23d-c01743d5810c" class="numbered-list" start="1"><li><strong>반복되는 일을 코드로 고정시키기</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ff-b838-f8c83ee040fc" class="">개발자는 이미<br/>자동화를 만들 수 있는 능력을 가지고 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ba-bbd0-d68af34eaa98" class="">그럼에도 불구하고<br/>많은 작업을 여전히 수동으로 반복한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ca-800a-f488c7f659ea" class="">예를 들어,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8068-8c80-f8115b388133" class="">매번 새로 만드는 관리자 페이지<br/>반복되는 API 구조<br/>비슷한 형태의 쇼핑몰, 랜딩 페이지<br/>고객마다 반복되는 커스터마이징 작업</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-805f-b365-c7298a3fe074" class="">이것들을 단순히 “일”로 처리하면<br/>그 순간의 돈으로 끝난다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8006-80b2-ef64d833057c" class="">하지만 이것을<br/>템플릿, 라이브러리, 서비스 형태로 만들면<br/>이건 더 이상 일이 아니다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ac-a784-c1e498740985" class="">구조가 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8016-af30-d5f6dff085eb" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-8061-90f9-cf0683ff9f01" class="numbered-list" start="2"><li><strong>결과물이 아니라 흐름을 만든다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8070-a207-cdadba9584aa" class="">대부분의 개발자는<br/>“결과물”을 만든다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8019-bc81-c215368a9e87" class="">하지만 구조를 만드는 사람은<br/>“흐름”을 만든다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-800c-97c5-ddca0e7168e4" class="">예를 들어,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8069-93ba-e6ade5a51c47" class="">웹사이트 하나를 만들어주는 것과<br/>웹사이트를 쉽게 만들 수 있는 시스템을 만드는 것은<br/>완전히 다른 이야기다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-805e-a663-c8825628dbcd" class="">전자는 한 번으로 끝나지만,<br/>후자는 계속해서 반복된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8074-b4b7-ffae6989f3ca" class="">여기서 중요한 것은<br/>기술의 난이도가 아니다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-805b-8c23-fb5cbcf14f0c" class="">관점이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803e-95d0-c0a8d81933e6" class="">“이걸 한 번 더 만들지 않으려면 어떻게 해야 할까”</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80fd-8bdd-e12bbd570594" class="">이 질문 하나가<br/>구조를 만든다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80bd-a20c-c2c989b6b586" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-800f-a270-ccf44d8f51af" class="numbered-list" start="3"><li><strong>작게 만들어도 괜찮다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d0-86b4-e3ef45464b86" class="">많은 사람들이<br/>구조를 만든다고 하면<br/>큰 서비스를 떠올린다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-806d-a73c-f86bf6a9aa54" class="">하지만 대부분의 구조는<br/>아주 작은 형태로 시작된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8037-bb8f-d352c955a1ee" class="">특정 기능만 제공하는 API<br/>반복 작업을 줄여주는 간단한 툴<br/>특정 문제만 해결하는 마이크로 서비스</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8089-8a1e-e4910d1cb6da" class="">이런 것들도 충분히<br/>돈을 만드는 구조가 될 수 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8044-9a95-d7516c5ef92c" class="">중요한 것은 규모가 아니라<br/>반복 가능성이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8011-aea2-f4cc37435bc9" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-800f-bde4-f7eae3aea03d" class="numbered-list" start="4"><li><strong>처음에는 돈이 안 될 수도 있다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8038-87a4-fb3cfdc6dfec" class="">여기서 많은 사람들이 포기한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8049-8220-f52fbdf51fe8" class="">구조를 만들기 시작하면<br/>초기에는 오히려 돈이 덜 벌릴 수 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c2-9007-f8085fd6640c" class="">왜냐하면<br/>지금까지 하던 “즉시 돈이 되는 일”을 줄이고,<br/>미래를 위한 작업을 해야 하기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809c-9140-eaaf8d2a2f9b" class="">이 구간은 불편하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8059-8677-e406ad1670d6" class="">그리고 불안하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8071-881b-d95a2cb62a27" class="">그래서 대부분은<br/>다시 원래 방식으로 돌아간다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8079-8da6-f6c854bd668b" class="">하지만 이 구간을 넘어서야<br/>비로소 차이가 생긴다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8015-8d12-ee103d21cc61" class="">시간을 쓰지 않아도<br/>결과가 만들어지는 경험.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-804a-9724-c513fbb43abe" class="">이 경험이 쌓이기 시작하면<br/>더 이상 이전으로 돌아가기 어렵다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e7-94e8-dd8a64efdf77" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-80e6-a0d1-c9f90a79d10c" class="numbered-list" start="5"><li><strong>완벽하지 않아도 된다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80fa-a55d-dac85163a457" class="">많은 개발자들이<br/>구조를 만들지 못하는 이유 중 하나는<br/>완벽주의다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802a-ab00-e90a1eab3023" class="">더 좋은 구조를 고민하다가,<br/>더 나은 기술을 찾다가,<br/>결국 아무것도 만들지 않는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-806d-a600-f65113ce6b08" class="">하지만 구조는<br/>완벽하게 만드는 것이 아니라<br/>“작동하게 만드는 것”이 먼저다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8040-8331-e0b8a951ca59" class="">작게 만들고,<br/>돌려보고,<br/>필요하면 개선하면 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8075-a823-d7a1abdccd45" class="">중요한 것은<br/><strong>“시작”</strong>이다.</p></div><div style="display:contents" dir="auto"><h1 id="32df6e9d-1929-8052-94eb-c79c4292ae4d" class="">챕터5. 우리는 왜 실행하지 못하는가</h1></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80bf-9e46-ebec725e4296" class="">우리는 이미 알고 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8010-9fc2-cb1b81d5cac2" class="">반복되는 일을 줄여야 한다는 것도,<br/>구조를 만들어야 한다는 것도,<br/>시간을 팔지 않는 방향으로 가야 한다는 것도.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e3-8cd9-f0fdcb842d92" class="">그럼에도 불구하고<br/>대부분은 그대로 머문다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8075-b651-d16f8dba09b6" class="">이건 의지의 문제가 아니다.<br/>능력의 문제도 아니다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8071-96bd-c11650fca9dd" class="">구조의 문제가 아니라,<br/>“상태”의 문제다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-805a-9efa-c65a5dcfe54c" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-80e4-ae77-d8b58fcff9bf" class="numbered-list" start="1"><li><strong>시간이 없어서가 아니라, 여유가 없다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8022-813a-eb80506f24b6" class="">많은 사람들이 말한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d6-8977-f242a582647f" class="">“시간이 없어서 못 한다.”</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8000-b71d-c827657a4d77" class="">하지만 정확히 말하면<br/>시간이 없는 것이 아니라<br/>여유가 없는 상태다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b7-8691-e4403daaa3b4" class="">하루 일을 마치고 나면<br/>에너지가 남아 있지 않다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f8-a1e2-c3cd288afd95" class="">이미 일을 하면서<br/>모든 집중력과 체력을 써버렸기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b9-9cc6-fdee9dc5ed81" class="">이 상태에서는<br/>새로운 구조를 만드는 일이 아니라,<br/>그저 쉬는 것이 우선이 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8085-aec0-de6330529c4c" class="">그래서 우리는<br/>다시 같은 하루를 반복한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8014-b6ba-de538718f49c" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-8086-bf79-c874d640b2dd" class="numbered-list" start="2"><li><strong>지금의 수익을 포기할 수 없다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8057-9fc1-f6dd29768f6b" class="">구조를 만든다는 것은<br/>당장의 수익을 일부 포기하는 일이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-804e-8da6-fe87c22d0f4e" class="">지금까지는<br/>시간을 쓰면 바로 돈이 들어왔다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8004-9dca-c597ab2ed5a6" class="">하지만 구조를 만드는 일은<br/>바로 돈이 되지 않을 수 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8005-ab0b-f2722edf755e" class="">이 차이는 생각보다 크다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-808e-8f17-c163520193e8" class="">눈에 보이는 수익을 포기하고,<br/>보이지 않는 가능성에 투자하는 일.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-807b-b844-fb89f172ec0a" class="">이건 단순한 선택이 아니라<br/>심리적인 장벽이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8083-9230-e68cdfe3935e" class="">그래서 우리는<br/>안전한 선택을 반복한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8000-9eb9-da10bf3236aa" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-8012-a4c3-e2178e6b66d4" class="numbered-list" start="3"><li><strong>실패 비용이 너무 크게 느껴진다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d6-839f-c061c37cfd19" class="">만약 구조를 만들다가 실패하면<br/>그 시간은 아무 의미가 없어진 것처럼 느껴진다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-806a-a314-f4e42b30a785" class="">하지만 일을 하다가 쓴 시간은<br/>항상 돈으로 환산된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8091-8e95-e97d98fc4d4d" class="">이 차이 때문에<br/>우리는 더더욱 구조를 피하게 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803c-a6c8-f2e72ebc572f" class="">하지만 사실은 반대다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f0-9691-d099a9daec67" class="">일을 하며 쓴 시간은<br/>그 순간에 끝나지만,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8028-91e0-cc97180f45c4" class="">구조를 만들다가 쓴 시간은<br/>나중에 계속해서 영향을 미친다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803f-9d0c-e26184cbb6bb" class="">문제는<br/>이걸 체감해본 적이 없다는 것이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80fb-975f-e5c05fdc88f6" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-80ab-b8ff-ebeb0a7e7a17" class="numbered-list" start="4"><li><strong>방향이 없으면 시작할 수 없다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803d-8caf-cf43a39c686d" class="">많은 개발자들이<br/>“무엇을 만들어야 할지 모르겠다”고 말한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c4-aa20-f9531a60b4a3" class="">이건 자연스러운 상태다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b1-af92-f0c40cda0ab7" class="">우리는 지금까지<br/>“주어진 문제”를 해결하는 데 익숙했기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8086-bfc4-f63b4db88b84" class="">하지만 구조를 만든다는 것은<br/>문제를 스스로 정의하는 일이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-800a-8bfc-c95316200031" class="">이건 전혀 다른 영역이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8066-876d-d2b26712cfe0" class="">그래서 대부분은<br/>생각만 하다가 멈춘다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ca-9aff-e83b58fd6d68" class="">완벽한 아이디어를 찾으려고 하다가<br/>아무것도 시작하지 못한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80fb-b238-c38012bc185c" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-805a-8754-d0fdeb653996" class="numbered-list" start="5"><li><strong>아직 절박하지 않다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ef-b2b6-ee25179e428c" class="">이건 조금 불편한 이야기일 수 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ea-8195-e3158974e456" class="">사실 많은 경우<br/>우리는 아직 충분히 괜찮다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f7-8087-f6722d1d405f" class="">지금의 수입으로도<br/>어느 정도는 살아갈 수 있고,<br/>크게 불편하지 않다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e8-b2ae-e7379193a92a" class="">그래서 굳이 바꿀 이유가 없다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d7-b217-e3a82e2cba2e" class="">하지만 이 상태는<br/>천천히 우리를 묶어둔다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ae-aed6-eb85f451dbc1" class="">시간이 지날수록<br/>변화의 비용은 더 커지고,<br/>움직이기는 더 어려워진다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8022-9b0b-eb6a2b89b014" class="">우리는 실행하지 못하는 것이 아니라,<br/>지금의 구조에서 벗어나지 못하는 것이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-804e-b434-d0554de294e6" class="">이건 의지가 약해서가 아니라<br/>환경이 그렇게 만들어져 있기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8013-acfc-eef77ead1432" class="">그래서 해결 방법도 단순하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8099-86e3-fd334c2af254" class="">의지를 강화하는 것이 아니라,<br/>구조를 바꿔야 한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8066-b68a-edfd212d822c" class="">
-</p></div><div style="display:contents" dir="auto"><h1 id="32df6e9d-1929-807a-b1f4-fd2075db5708" class="">챕터6. 구조를 바꾸는 가장 현실적인 방법</h1></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8050-854b-f468a989623e" class="">우리는 이미 알고 있다.<br/>문제도 알고 있고, 방향도 알고 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8020-b768-e13123ca2cfc" class="">이제 남은 것은 단 하나다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809b-9b4c-ebc2de00ad00" class="">실제로 바꾸는 것.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80da-a1b5-e8daefc324dc" class="">하지만 여기서 대부분 멈춘다.<br/>이유는 간단하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8035-a304-eae6b59fa32b" class="">방법이 추상적이기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-808c-856d-c22b61034330" class="">그래서 필요한 것은<br/>거창한 전략이 아니라,<br/>지금 당장 실행 가능한 방식이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b7-9214-e7d3e554b1ae" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-80d3-963a-c34fc3aae21d" class="numbered-list" start="1"><li><strong>시간을 만들려고 하지 말고, 구조를 바꿔라</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a8-b813-f77e9ecbe6a0" class="">많은 사람들이<br/>“시간을 따로 내서 해야지”라고 생각한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ca-9ec2-c6917f8a3f1b" class="">하지만 현실은 그렇지 않다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80cd-96c4-c60fdaaa8e7c" class="">일을 하고 남는 시간으로<br/>새로운 구조를 만든다는 것은<br/>생각보다 오래 지속되기 어렵다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80df-a6da-feeb19a9a970" class="">그래서 접근을 바꿔야 한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8098-a73a-e69be9bb547c" class="">기존 일을 줄이면서 시작해야 한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a3-94df-ed262ec771ad" class="">100% 일을 하던 상태에서 → 90%로 줄이고<br/>남은 10%를 구조 만드는 데 쓴다</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8084-9ea1-f1f66c09ced1" class="">이 10%가<br/>미래를 바꾸는 시간이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8099-b3cd-d8c1e492680e" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-80a6-9f7d-e94ae3d55ad7" class="numbered-list" start="2"><li><strong>“돈 되는 일”과 “구조 만드는 일”을 분리하지 마라</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e3-a244-cfa4214009a8" class="">많은 사람들이<br/>이 둘을 완전히 다른 것으로 생각한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-808c-ae69-ee5463a1fb96" class="">하지만 가장 현실적인 방법은<br/>지금 하고 있는 일 안에서<br/>구조를 만드는 것이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e3-89a3-c509fc21a49f" class="">예를 들어,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f2-9d93-ddf40b46d6b4" class="">반복되는 기능 → 모듈화<br/>자주 쓰는 코드 → 패키지화<br/>여러 번 만드는 서비스 → 템플릿화</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8047-af27-d54983b2592a" class="">이렇게 하면<br/>“돈 되는 일”이<br/>곧 “구조 만드는 일”이 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8001-8f90-e95933af6611" class="">이게 핵심이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801c-b4b7-ef9557bcefa8" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-80ef-bdd7-d1aa8c0e687b" class="numbered-list" start="3"><li><strong>작게 팔아보고, 나중에 키워라</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809a-b3e2-f7236af50ae2" class="">처음부터 완벽한 서비스를 만들 필요는 없다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80dc-a76c-c35940a67169" class="">오히려 반대다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-801e-83ca-df7e02a47027" class="">작게 만들어서<br/>바로 팔아봐야 한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8004-9637-efefff0420e9" class="">왜냐하면<br/>돈이 되는 구조는<br/>아이디어가 아니라<br/>“검증”에서 나오기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8070-aa4c-d80741290cb3" class="">작은 기능 하나<br/>단순한 자동화 하나<br/>특정 문제 하나 해결</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8083-9674-cc0e87af5262" class="">이 정도로 충분하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ed-ae6c-ca36eb53812a" class="">중요한 건<br/><mark class="highlight-blue"><strong>**“누군가 돈을 내는가”**</strong></mark>다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8094-903c-ed8559f3bffc" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-8086-8a40-f3680eb01e8a" class="numbered-list" start="4"><li><strong>실패 비용을 줄여라</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80bf-9ccf-c5a226c0f1ee" class="">구조를 만들다 포기하는 이유는<br/>실패가 크게 느껴지기 때문이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8094-a088-c99b506faaf8" class="">그래서 전략이 필요하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803b-bdbb-e768c284a01f" class="">개발 기간을 짧게 가져간다<br/>기능을 최소화한다<br/>빠르게 결과를 확인한다</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803a-b6fd-f40ce6ae7d8e" class="">이렇게 하면<br/>실패해도 타격이 작다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-800c-8bbd-f9036ef02d79" class="">그리고 이 경험이 쌓이면<br/>점점 더 빠르게 시도할 수 있게 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8041-abe8-f8123d1a23ad" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-806f-8647-d262ca78dad2" class="numbered-list" start="5"><li><strong>“완성”이 아니라 “흐름”을 만든다</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-807a-b42a-c31f8a44e99b" class="">많은 사람들이<br/>하나를 완벽하게 만들려고 한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8066-9585-e2b9c70b3f91" class="">하지만 중요한 건<br/>하나의 결과물이 아니라<br/>지속적으로 만들어내는 흐름이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b2-bf07-de388037ca8d" class="">한 번 만들고 끝나는 것이 아니라,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8016-aeaf-eb4884e9fe92" class="">만들고<br/>팔아보고<br/>개선하고<br/>다시 만든다</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f5-b60a-ccf1ff20190b" class="">이 사이클이 돌아가기 시작하면<br/>이미 구조는 만들어진 것이다.</p></div><div style="display:contents" dir="auto"><h4 id="32df6e9d-1929-8029-8fe1-d8d26da772df" class=""><strong>핵심 전략 요약</strong></h4></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-801a-b586-c5d5dfe0f878" class="bulleted-list"><li style="list-style-type:disc">시간을 따로 만들지 말고, 기존 일을 줄인다</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-8086-8d65-c11a710a1862" class="bulleted-list"><li style="list-style-type:disc">지금 하는 일 안에서 구조를 만든다</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-8070-9e0e-d2af43625345" class="bulleted-list"><li style="list-style-type:disc">작게 만들어서 바로 팔아본다</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80c9-ace1-d5f289cd6012" class="bulleted-list"><li style="list-style-type:disc">실패 비용을 낮춘다</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80a7-900b-c1e9b18230cc" class="bulleted-list"><li style="list-style-type:disc">반복 가능한 흐름을 만든다</li></ul></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80eb-bb8d-c1fa869c1173" class="">이건 특별한 사람이 하는 방식이 아니다.<br/>현실에서 가장 실행 가능한 방식이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8023-a160-faee850e534b" class="">
-</p></div><div style="display:contents" dir="auto"><h4 id="32df6e9d-1929-80a5-a89b-e80308f5db35" class=""><strong>중요한 변화</strong></h4></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80df-b7fe-ca6ac812529f" class="">이 과정을 거치면서<br/>하나의 변화가 생긴다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8090-b3ef-ffc78086547b" class="">더 이상<br/>“시간을 팔아서 돈을 버는 사람”이 아니라,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802d-8b61-d573a1602415" class="">“구조를 만들어 돈을 만드는 사람”으로<br/>조금씩 바뀌기 시작한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8021-955a-c9cba68032ca" class="">이 변화는 작지만,<br/>시간이 지날수록 결정적인 차이를 만든다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8092-8ffc-c02bd7e292ca" class="">
-</p></div><div style="display:contents" dir="auto"><h1 id="32df6e9d-1929-8033-9c26-ff09d88ed6f3" class="">챕터7. 개발자가 만들 수 있는 돈의 구조들</h1></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8064-ab2d-c37de5018b7b" class="">이제 질문은 명확해졌다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d0-bed2-eef32f1f0b8d" class="">구조를 만들어야 한다는 것도 알고 있고,<br/>어떻게 시작해야 하는지도 이해했다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b2-b0fa-d8b0221a14f1" class="">그렇다면 남은 것은 하나다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8094-af32-cb0d3cf747f0" class="">무엇을 만들 것인가.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80be-8ee3-d25bc1e3eb83" class="">개발자가 만들 수 있는 구조는 생각보다 다양하다.<br/>하지만 대부분은 몇 가지 유형으로 정리된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d2-9cb2-e795dc7b1618" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-80f7-98b7-e5660a58062f" class="numbered-list" start="1"><li><strong>SaaS (서비스 자체가 돈이 되는 구조)</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-806d-8598-e69d34e11e22" class="">가장 강력한 구조다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8002-a84c-ddf555a8ee90" class="">한 번 만든 서비스가<br/>여러 사용자에게 반복적으로 판매된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b9-946a-d2e95acf233a" class="">월 구독<br/>사용량 기반 과금<br/>기능 제한 / 업그레이드 모델</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8048-81f3-fd5b57c576f7" class="">이 구조의 핵심은 단순하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8000-bc1a-f5fdebbea8ea" class="">“한 번 만들고, 여러 번 판다.”</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8000-b922-f4195b5b4c3b" class="">예를 들어,</p></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80dd-9bc9-fdd5056a0b7b" class="bulleted-list"><li style="list-style-type:disc">예약 관리 시스템</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-809b-8713-f702be324a5d" class="bulleted-list"><li style="list-style-type:disc">간단한 CRM</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80b7-b532-e0e449db2b53" class="bulleted-list"><li style="list-style-type:disc">특정 업종 전용 툴</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80b0-9906-e5c8e4d82369" class="bulleted-list"><li style="list-style-type:disc">반복 업무 자동화 서비스</li></ul></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803b-9c38-d955e8fca51a" class="">중요한 건 거창한 기능이 아니다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c3-8420-f75f2444df24" class="">특정한 문제 하나를<br/>확실하게 해결하는 것이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e9-a2fc-cdbb49dd9efd" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-80fe-9d4c-e5afc02f6209" class="numbered-list" start="2"><li><strong>자동화 도구 (시간을 줄여주는 구조)</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8026-8cb0-f3ee2bb0afef" class="">사람들은 시간을 아끼기 위해 돈을 쓴다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a4-82ae-f5603a72ebcc" class="">이 구조는<br/>그 지점을 정확히 건드린다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8065-99a0-f68eb9dbbb59" class="">데이터 수집 자동화<br/>반복 작업 스크립트<br/>업무 프로세스 자동화</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-800b-8761-e14ec747d3b3" class="">작게 시작하기 좋고,<br/>개발자에게 가장 현실적인 진입점이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f9-89f2-f1fd40dbf3fc" class="">처음에는 내부에서 쓰다가,<br/>나중에 외부에 판매하는 방식도 가능하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-800b-aa68-fe3eb24cb267" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-8016-a9d3-d5aebeb312d5" class="numbered-list" start="3"><li><strong>API / 플랫폼 (기능을 파는 구조)</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a0-a66c-c84a52bc1774" class="">이건 개발자에게 특히 유리한 구조다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ce-9855-ead107002270" class="">특정 기능을 API 형태로 제공하고,<br/>사용량 기반으로 수익을 만든다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f0-a922-febf983130e8" class="">인증 / 결제 모듈<br/>데이터 처리<br/>특정 기능 (이미지, 텍스트, 분석 등)</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8034-8e35-e02520fae04b" class="">이 구조는<br/>“결과”가 아니라 “기능” 자체를 판매한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c7-9870-c7487f9bb4d6" class="">잘 만들어지면<br/>다른 서비스 위에서 계속 사용된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80fc-9c88-f6b78f5f13ae" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-8080-bf1f-c91634ada27c" class="numbered-list" start="4"><li><strong>템플릿 / 재사용 가능한 자산</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f0-8523-fa6ac55eabef" class="">이미 우리가 하고 있는 일과 가장 가깝다.</p></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80c6-a10e-d879e66b6100" class="bulleted-list"><li style="list-style-type:disc">웹사이트 템플릿</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-804a-8091-eec0c6c112eb" class="bulleted-list"><li style="list-style-type:disc">관리자 페이지 구조</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-8050-9219-e8e04964d5b1" class="bulleted-list"><li style="list-style-type:disc">UI 컴포넌트</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80c0-bf7a-fdadc756d024" class="bulleted-list"><li style="list-style-type:disc">코드 스니펫</li></ul></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80de-b738-ec736cffd87a" class="">한 번 만들어두면<br/>여러 번 판매할 수 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8058-a7b2-ff53714ce3a6" class="">작게 시작할 수 있고,<br/>실패 부담이 낮다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e4-80cb-db7b7b56bc35" class="">하지만 중요한 건<br/>“단순한 코드”가 아니라<br/>“바로 쓸 수 있는 형태”로 만드는 것이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802d-90ae-c5adc83206ec" class="">
-</p></div><div style="display:contents" dir="auto"><ol type="1" id="32df6e9d-1929-804b-a84e-d0b8bccebea2" class="numbered-list" start="5"><li><strong>콘텐츠 + 개발 (지식의 구조화)</strong></li></ol></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8072-8a30-df09c6dd4c93" class="">개발 경험 자체도 자산이 된다.</p></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80c3-b955-d42d7c413c75" class="bulleted-list"><li style="list-style-type:disc">강의</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-8042-83d4-d24a17c18875" class="bulleted-list"><li style="list-style-type:disc">전자책</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-8097-b173-c519d7811495" class="bulleted-list"><li style="list-style-type:disc">튜토리얼</li></ul></div><div style="display:contents" dir="auto"><ul id="32df6e9d-1929-80da-ab53-ea4a9cf7136d" class="bulleted-list"><li style="list-style-type:disc">기술 블로그</li></ul></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8095-a9f8-e423876700cf" class="">이건 단순한 정보 전달이 아니다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8084-8924-ec795193ad2f" class="">“문제를 해결하는 흐름”을<br/>다른 사람에게 전달하는 구조다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-800b-88cf-ec9988917438" class="">그리고 이 구조는<br/>시간이 지날수록 계속 누적된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-809f-9e4f-de51a1c82372" class="">
-</p></div><div style="display:contents" dir="auto"><h4 id="32df6e9d-1929-8033-9cab-db6afeeb3148" class=""><strong>중요한 기준</strong></h4></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8008-8c25-dd0a0a5079c8" class="">어떤 구조를 선택하든<br/>반드시 확인해야 할 기준이 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f1-aae8-fe63ec45dfaa" class="">반복 가능한가<br/>내가 없어도 돌아가는가<br/>여러 번 판매 가능한가</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80dd-896a-cab8a09f4c7c" class="">이 세 가지가 없다면<br/>그건 구조가 아니라 또 다른 노동이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a0-9387-fe75ea6cec4f" class="">
-</p></div><div style="display:contents" dir="auto"><h4 id="32df6e9d-1929-809d-8229-e8839063036e" class=""><strong>현실적인 시작점</strong></h4></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8046-bf9c-e17ed5357877" class="">많은 사람들이<br/>“무엇을 만들어야 할지 모르겠다”고 말한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b0-b99c-f94482a812f8" class="">그럴 때는 이렇게 보면 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8099-8123-e2f4322109a1" class="">지금 하고 있는 일에서<br/>가장 많이 반복되는 것.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80bb-bb5e-c6bf1a454389" class="">그게 바로<br/>첫 번째 구조의 시작점이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8048-9385-c2e0b823325e" class="">완전히 새로운 것을 찾으려고 하지 말고,<br/>이미 하고 있는 것을 바꿔라.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8079-b5d2-ffce2caef494" class="">
-</p></div><div style="display:contents" dir="auto"><h1 id="32df6e9d-1929-8063-8bbf-f1c05571b890" class="">챕터8. 결국 우리는 어떤 삶을 원하는가</h1></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-805f-9d8a-ec0ef4cabddf" class="">우리는 처음에<br/>하나의 질문에서 시작했다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8015-8a04-e22ff36e8cff" class="">내가 하는 일이<br/>내 삶을 얼마나 윤택하게 만드는가.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80d4-859b-c57349c7194f" class="">여기까지 오면서<br/>우리는 많은 것을 이해했다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8029-81d3-cc6addc17291" class="">왜 열심히 일해도<br/>삶이 크게 달라지지 않는지,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80eb-b30b-dc314724378d" class="">왜 개발자라는 직업이<br/>시간과 강하게 연결되어 있는지,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f5-a7cc-c7b4561dc818" class="">그리고<br/>그 구조를 어떻게 바꿀 수 있는지.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-806c-a4ed-e16f61ba6f57" class="">하지만 여전히<br/>남아 있는 질문이 있다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80b1-9b6c-ee3530432f58" class="">그래서 우리는<br/>왜 돈을 벌려고 하는가.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-802f-b773-ed607e4ee499" class="">이 질문은 단순해 보이지만<br/>생각보다 쉽게 답할 수 없다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-807d-9db3-d57a87e20877" class="">더 좋은 집,<br/>더 편한 생활,<br/>더 많은 선택지.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8021-b698-d481db4ca264" class="">이 모든 것들은 결국<br/>하나로 연결된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8047-8218-c3e31140f23b" class="">자유.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f2-8d95-eeca40497b8f" class="">원하는 시간에,<br/>원하는 일을,<br/>원하는 방식으로 할 수 있는 상태.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-803a-91b7-eb05a07bdcb6" class="">우리가 돈을 원하는 이유는<br/>결국 이 자유에 가깝다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f5-ac40-c1bc1e0b2c3c" class="">하지만 여기서<br/>한 가지 착각이 생긴다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e6-b578-c64d6f23cf8a" class="">돈이 많아지면<br/>자동으로 자유로워질 것이라는 생각.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80be-9f27-f72b1afddf22" class="">현실은 그렇지 않다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8057-9e6d-e6ec841eabd9" class="">구조가 바뀌지 않으면<br/>돈이 늘어나도<br/>여전히 같은 방식으로 살아가게 된다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-808f-89e3-fee95c890951" class="">더 많은 일을 하고,<br/>더 많은 책임을 지고,<br/>더 많은 시간을 쓰면서.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80ff-a21b-e70802893b94" class="">그래서 중요한 것은<br/>단순히 돈을 버는 것이 아니라,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8017-945f-c187c7de254d" class="">어떤 구조 위에서<br/>돈을 만들고 있는가이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8054-a012-e573761501de" class="">이 차이는<br/>삶의 방향을 완전히 바꾼다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e4-84e4-fbb88a0f5cd1" class="">우리는 선택해야 한다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80aa-95e4-de46dd82c4a3" class="">지금처럼<br/>시간을 팔아서 안정적인 삶을 유지할 것인지,</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80bb-9d34-c85e035d58ef" class="">아니면<br/>불확실하더라도 구조를 만들어<br/>다른 가능성을 열 것인지.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80df-8e89-dbe9bae0bf03" class="">이 선택에는 정답이 없다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a0-bdf8-dafe202257b5" class="">누군가는 안정이 더 중요하고,<br/>누군가는 자유가 더 중요하다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80a8-9c3d-c9120b6cb20a" class="">중요한 것은<br/>의도하지 않은 선택을 하지 않는 것이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80c1-b6b7-fdbc6f03d367" class="">흐름에 떠밀려서가 아니라,<br/>스스로 이해하고 선택하는 것.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80f4-be3b-f33e2e45e8c3" class="">그게 이 책이 말하고 싶은 전부다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-80e9-bade-f13b1ba066e8" class="">우리는 코드를 짜는 사람이 아니라,<br/>삶의 구조를 설계하는 사람이다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8002-9f42-ecc8aef13d8f" class="">우리의 인생을 들여다보면<br/>오류가 없는 삶은 없다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8054-8eeb-c7a04554245f" class="">그럼에도 우리는 멈추지 않는다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-805e-9894-d55fbdb49e01" class="">불안함과 흔들림 속에서도<br/>자신의 삶을 설계해 나간다는 것,<br/>그것만으로 충분히 인생의 오류를 해결한<br/>개발자가 아닐까 하는 생각이 든다.</p></div><div style="display:contents" dir="auto"><p id="32df6e9d-1929-8025-9154-ec4e486d731f" class="">
-</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>시간을 파는 개발자, 구조를 만드는 개발자</title>
+  <style>
+    /* cspell:disable-file */
+    /* webkit printing magic: print all background colors */
+    html {
+        -webkit-print-color-adjust: exact;
+    }
+
+    * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    header{
+      line-height: 0;
+      font-size:0;
+    }
+    body {
+        line-height: 1.7;
+        width:100%;
+        padding:0 5%;
+        box-sizing: border-box;
+    }
+
+    a,
+    a.visited {
+        color: inherit;
+        text-decoration: underline;
+    }
+
+    .pdf-relative-link-path {
+        font-size: 80%;
+        color: #444;
+    }
+    pre{
+      font-size:3vw;
+    }
+    h1,
+    h2,
+    h3 {
+        letter-spacing: -0.01em;
+        line-height: 1.6;
+        font-weight: 600;
+        padding-bottom: 0.5em;
+        margin-bottom: 0;
+    }
+
+    /* Override strong tags inside headings to maintain consistent weight */
+    h1 strong,
+    h2 strong,
+    h3 strong {
+        font-weight: 600;
+    }
+    h1[id='32df6e9d-1929-80aa-a46c-d28fce517c29']{
+      padding-top:20vh;
+    }
+    .page-title {
+      margin: 33vh 0 23vh;
+      padding: 0 2vw;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      display: block;
+      width: 100%;
+      line-height: 1.4;
+      white-space: pre-line;
+      word-break: keep-all;
+    }
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 1.875rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 1.25rem;
+    }
+
+    .source {
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        padding: 1.5em;
+        word-break: break-all;
+    }
+
+    .callout {
+        border-radius: 10px;
+        padding: 1rem;
+    }
+
+    figure {
+        margin: 1.25em 0;
+        page-break-inside: avoid;
+    }
+
+    figcaption {
+        opacity: 0.5;
+        font-size: 85%;
+        margin-top: 0.5em;
+    }
+
+    mark {
+        background-color: transparent;
+    }
+
+    .indented {
+        padding-left: 1.5em;
+    }
+
+    hr {
+        background: transparent;
+        display: block;
+        width: 100%;
+        height: 1px;
+        visibility: visible;
+        border: none;
+        border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+
+    .collection-content {
+        font-size: 0.875rem;
+    }
+
+    .collection-content td {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .column-list {
+        display: flex;
+        gap: 46px;
+    }
+
+    .column {
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .column>*:first-child {
+        margin-top: 0;
+    }
+
+    .table_of_contents-item {
+        display: block;
+        font-size: 0.875rem;
+        line-height: 1.3;
+        padding: 0.125rem;
+    }
+
+    .table_of_contents-indent-1 {
+        margin-left: 1.5rem;
+    }
+
+    .table_of_contents-indent-2 {
+        margin-left: 3rem;
+    }
+
+    .table_of_contents-indent-3 {
+        margin-left: 4.5rem;
+    }
+
+    .table_of_contents-link {
+        text-decoration: none;
+        opacity: 0.7;
+        border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+    }
+
+    table,
+    th,
+    td {
+        border: 1px solid rgba(55, 53, 47, 0.09);
+        border-collapse: collapse;
+    }
+
+    table {
+        border-left: none;
+        border-right: none;
+    }
+
+    th,
+    td {
+        font-weight: normal;
+        padding: 0.25em 0.5em;
+        line-height: 1.5;
+        min-height: 1.5em;
+        text-align: left;
+    }
+
+    th {
+        color: rgba(55, 53, 47, 0.6);
+    }
+
+    ol,
+    ul {
+        margin: 0;
+        margin-block-start: 0.6em;
+        margin-block-end: 0.6em;
+    }
+
+    li>ol:first-child,
+    li>ul:first-child {
+        margin-block-start: 0.6em;
+    }
+
+    ul>li {
+        list-style: disc;
+    }
+
+    ul.to-do-list {
+        padding-inline-start: 0;
+    }
+
+    ul.to-do-list>li {
+        list-style: none;
+    }
+
+    .to-do-children-checked {
+        text-decoration: line-through;
+        opacity: 0.375;
+    }
+
+    ul.toggle>li {
+        list-style: none;
+    }
+    figure[id='32df6e9d-1929-807b-bf6e-f45017646dd4']{
+      padding-top:5vh;
+    }
+    ul {
+        padding-inline-start: 1.7em;
+    }
+
+    ul>li {
+        padding-left: 0.1em;
+    }
+
+    ol {
+        padding-inline-start: 0;
+    }
+
+    ol>li {
+        padding-left: 0em;
+    }
+
+    .mono ol {
+
+    }
+
+    .mono ol>li {
+
+    }
+
+    .toggle {
+        padding-inline-start: 0em;
+        list-style-type: none;
+    }
+
+    /* Indent toggle children */
+    .toggle>li>details {
+        padding-left: 1.7em;
+    }
+
+    .toggle>li>details>summary {
+        margin-left: -1.1em;
+    }
+    ol{
+      padding-top:3vh;
+      font-weight:bold;
+      padding-left:1.6em;
+      font-size:1.12em;
+    }
+    ol strong{
+      font-weight:bold;
+    }
+    h1{
+      line-height: 1.2;
+      word-break: keep-all;
+      padding-top:5vh;
+    }
+    ul[id='32df6e9d-1929-8064-a911-c0bfc1a14e27']{
+      padding-top:5vh;
+    }
+    h1 >div{
+      display:inline-block;
+      padding:0.2em 0.7em 0.1em;
+      border:3px solid #FF6816;
+      border-radius: 30px;
+      font-size:0.6em;
+      color:#FF6816;
+      margin-bottom:0.7em;
+    }
+    h2{
+      padding-top:20vh;
+    }
+    .selected-value {
+        display: inline-block;
+        padding: 0 0.5em;
+        background: rgba(206, 205, 202, 0.5);
+        border-radius: 3px;
+        margin-right: 0.5em;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        white-space: nowrap;
+    }
+
+    .collection-title {
+        display: inline-block;
+        margin-right: 1em;
+    }
+
+    .page-description {
+        margin-bottom: 2em;
+    }
+
+    .simple-table {
+        margin-top: 1em;
+        font-size: 0.875rem;
+        empty-cells: show;
+    }
+
+    .simple-table td {
+        height: 29px;
+        min-width: 120px;
+    }
+
+    .simple-table th {
+        height: 29px;
+        min-width: 120px;
+    }
+
+    .simple-table-header-color {
+        background: rgb(247, 246, 243);
+        color: black;
+    }
+
+    .simple-table-header {
+        font-weight: 500;
+    }
+
+    time {
+        opacity: 0.5;
+    }
+
+    .icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 1.2em;
+        max-height: 1.2em;
+        text-decoration: none;
+        vertical-align: text-bottom;
+        margin-right: 0.5em;
+    }
+
+    img.icon {
+        border-radius: 3px;
+    }
+
+    .callout img.notion-static-icon {
+        width: 1em;
+        height: 1em;
+    }
+
+    .callout p {
+        margin: 0;
+    }
+
+    .callout h1,
+    .callout h2,
+    .callout h3 {
+        margin: 0 0 0.6rem;
+    }
+
+    .user-icon {
+        width: 1.5em;
+        height: 1.5em;
+        border-radius: 100%;
+        margin-right: 0.5rem;
+    }
+
+    .user-icon-inner {
+        font-size: 0.8em;
+    }
+
+    .text-icon {
+        border: 1px solid #000;
+        text-align: center;
+    }
+
+    .page-cover-image {
+        display: block;
+        object-fit: cover;
+        width: 100%;
+        max-height: 30vh;
+    }
+
+    .page-header-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .page-header-icon-with-cover {
+        margin-top: -0.72em;
+        margin-left: 0.07em;
+    }
+
+    .page-header-icon img {
+        border-radius: 3px;
+    }
+
+    .link-to-page {
+        margin: 1em 0;
+        padding: 0;
+        border: none;
+        font-weight: 500;
+    }
+
+    p>.user {
+        opacity: 0.5;
+    }
+
+    td>.user,
+    td>time {
+        white-space: nowrap;
+    }
+
+    input[type="checkbox"] {
+        transform: scale(1.5);
+        margin-right: 0.6em;
+        vertical-align: middle;
+    }
+
+    p {
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+    }
+
+    .image {
+        border: none;
+        margin: 1.5em 0;
+        padding: 0;
+        border-radius: 0;
+        text-align: center;
+    }
+
+    .code,
+    code {
+        background: rgba(135, 131, 120, 0.15);
+        border-radius: 3px;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-size: 85%;
+        tab-size: 2;
+    }
+
+    code {
+        color: #eb5757;
+    }
+
+    .code {
+        padding: 1.5em 1em;
+    }
+
+    .code-wrap {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    .code>code {
+        background: none;
+        padding: 0;
+        font-size: 100%;
+        color: inherit;
+    }
+
+    blockquote {
+        font-size: 1em;
+        margin: 1em 0;
+        padding-left: 1em;
+        border-left: 3px solid rgb(55, 53, 47);
+    }
+
+    blockquote.quote-large {
+        font-size: 1.25em;
+    }
+
+    .bookmark {
+        text-decoration: none;
+        max-height: 8em;
+        padding: 0;
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .bookmark-title {
+        font-size: 0.85em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 1.75em;
+        white-space: nowrap;
+    }
+
+    .bookmark-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bookmark-info {
+        flex: 4 1 180px;
+        padding: 12px 14px 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .bookmark-image {
+        width: 33%;
+        flex: 1 1 180px;
+        display: block;
+        position: relative;
+        object-fit: cover;
+        border-radius: 1px;
+    }
+
+    .bookmark-description {
+        color: rgba(55, 53, 47, 0.6);
+        font-size: 0.75em;
+        overflow: hidden;
+        max-height: 4.5em;
+        word-break: break-word;
+    }
+
+    .bookmark-href {
+        font-size: 0.75em;
+        margin-top: 0.25em;
+    }
+
+    .sans {
+        font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+
+    .code {
+        font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+    }
+
+    .serif {
+        font-family: Lyon-Text, Georgia, ui-serif, serif;
+    }
+
+    .mono {
+        font-family: iawriter-mono, Nitti, Menlo, Courier, monospace;
+    }
+
+    .pdf .sans {
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP';
+    }
+
+    .pdf:lang(zh-CN) .sans {
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC';
+    }
+
+    .pdf:lang(zh-TW) .sans {
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC';
+    }
+
+    .pdf:lang(ko-KR) .sans {
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR';
+    }
+
+    .pdf .code {
+        font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP';
+    }
+
+    .pdf:lang(zh-CN) .code {
+        font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC';
+    }
+
+    .pdf:lang(zh-TW) .code {
+        font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC';
+    }
+
+    .pdf:lang(ko-KR) .code {
+        font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR';
+    }
+
+    .pdf .serif {
+        font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP';
+    }
+
+    .pdf:lang(zh-CN) .serif {
+        font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC';
+    }
+
+    .pdf:lang(zh-TW) .serif {
+        font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC';
+    }
+
+    .pdf:lang(ko-KR) .serif {
+        font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR';
+    }
+
+    .pdf .mono {
+        font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP';
+    }
+
+    .pdf:lang(zh-CN) .mono {
+        font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC';
+    }
+
+    .pdf:lang(zh-TW) .mono {
+        font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC';
+    }
+
+    .pdf:lang(ko-KR) .mono {
+        font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR';
+    }
+
+    .highlight-default {
+        color: rgba(44, 44, 43, 1);
+    }
+
+    .highlight-gray {
+        color: rgba(125, 122, 117, 1);
+        fill: rgba(125, 122, 117, 1);
+    }
+
+    .highlight-brown {
+        color: rgba(159, 118, 90, 1);
+        fill: rgba(159, 118, 90, 1);
+    }
+
+    .highlight-orange {
+        color: rgba(210, 123, 45, 1);
+        fill: rgba(210, 123, 45, 1);
+    }
+
+    .highlight-yellow {
+        color: rgba(203, 148, 52, 1);
+        fill: rgba(203, 148, 52, 1);
+    }
+
+    .highlight-teal {
+        color: rgba(80, 148, 110, 1);
+        fill: rgba(80, 148, 110, 1);
+    }
+
+    .highlight-blue {
+        color: rgba(56, 125, 201, 1);
+        fill: rgba(56, 125, 201, 1);
+    }
+
+    .highlight-purple {
+        color: rgba(154, 107, 180, 1);
+        fill: rgba(154, 107, 180, 1);
+    }
+
+    .highlight-pink {
+        color: rgba(193, 76, 138, 1);
+        fill: rgba(193, 76, 138, 1);
+    }
+
+    .highlight-red {
+        color: rgba(207, 81, 72, 1);
+        fill: rgba(207, 81, 72, 1);
+    }
+
+    .highlight-default_background {
+        color: rgba(44, 44, 43, 1);
+    }
+
+    .highlight-gray_background {
+        background: rgba(42, 28, 0, 0.07);
+    }
+
+    .highlight-brown_background {
+        background: rgba(139, 46, 0, 0.086);
+    }
+
+    .highlight-orange_background {
+        background: rgba(224, 101, 1, 0.129);
+    }
+
+    .highlight-yellow_background {
+        background: rgba(211, 168, 0, 0.137);
+    }
+
+    .highlight-teal_background {
+        background: rgba(0, 100, 45, 0.09);
+    }
+
+    .highlight-blue_background {
+        background: rgba(0, 124, 215, 0.094);
+    }
+
+    .highlight-purple_background {
+        background: rgba(102, 0, 178, 0.078);
+    }
+
+    .highlight-pink_background {
+        background: rgba(197, 0, 93, 0.086);
+    }
+
+    .highlight-red_background {
+        background: rgba(223, 22, 0, 0.094);
+    }
+
+    .block-color-default {
+        color: inherit;
+        fill: inherit;
+    }
+
+    .block-color-gray {
+        color: rgba(125, 122, 117, 1);
+        fill: rgba(125, 122, 117, 1);
+    }
+
+    .block-color-brown {
+        color: rgba(159, 118, 90, 1);
+        fill: rgba(159, 118, 90, 1);
+    }
+
+    .block-color-orange {
+        color: rgba(210, 123, 45, 1);
+        fill: rgba(210, 123, 45, 1);
+    }
+
+    .block-color-yellow {
+        color: rgba(203, 148, 52, 1);
+        fill: rgba(203, 148, 52, 1);
+    }
+
+    .block-color-teal {
+        color: rgba(80, 148, 110, 1);
+        fill: rgba(80, 148, 110, 1);
+    }
+
+    .block-color-blue {
+        color: rgba(56, 125, 201, 1);
+        fill: rgba(56, 125, 201, 1);
+    }
+
+    .block-color-purple {
+        color: rgba(154, 107, 180, 1);
+        fill: rgba(154, 107, 180, 1);
+    }
+
+    .block-color-pink {
+        color: rgba(193, 76, 138, 1);
+        fill: rgba(193, 76, 138, 1);
+    }
+
+    .block-color-red {
+        color: rgba(207, 81, 72, 1);
+        fill: rgba(207, 81, 72, 1);
+    }
+
+    .block-color-default_background {
+        color: inherit;
+        fill: inherit;
+    }
+
+    .block-color-gray_background {
+        background: rgba(240, 239, 237, 1);
+    }
+
+    .block-color-brown_background {
+        background: rgba(245, 237, 233, 1);
+    }
+
+    .block-color-orange_background {
+        background: rgba(251, 235, 222, 1);
+    }
+
+    .block-color-yellow_background {
+        background: rgba(249, 243, 220, 1);
+    }
+
+    .block-color-teal_background {
+        background: rgba(232, 241, 236, 1);
+    }
+
+    .block-color-blue_background {
+        background: rgba(229, 242, 252, 1);
+    }
+
+    .block-color-purple_background {
+        background: rgba(243, 235, 249, 1);
+    }
+
+    .block-color-pink_background {
+        background: rgba(250, 233, 241, 1);
+    }
+
+    .block-color-red_background {
+        background: rgba(252, 233, 231, 1);
+    }
+
+    .select-value-color-default {
+        background-color: rgba(42, 28, 0, 0.07);
+    }
+
+    .select-value-color-gray {
+        background-color: rgba(28, 19, 1, 0.11);
+    }
+
+    .select-value-color-brown {
+        background-color: rgba(127, 51, 0, 0.156);
+    }
+
+    .select-value-color-orange {
+        background-color: rgba(196, 88, 0, 0.203);
+    }
+
+    .select-value-color-yellow {
+        background-color: rgba(209, 156, 0, 0.282);
+    }
+
+    .select-value-color-green {
+        background-color: rgba(0, 96, 38, 0.156);
+    }
+
+    .select-value-color-blue {
+        background-color: rgba(0, 118, 217, 0.203);
+    }
+
+    .select-value-color-purple {
+        background-color: rgba(92, 0, 163, 0.141);
+    }
+
+    .select-value-color-pink {
+        background-color: rgba(183, 0, 78, 0.152);
+    }
+
+    .select-value-color-red {
+        background-color: rgba(206, 24, 0, 0.164);
+    }
+
+  </style>
+</head>
+<body>
+    <article id="25ff6e9d-1929-80f8-b9bc-c15f78f36f6c" class="page sans">
+        <header>
+          <div style="display:contents" dir="ltr">
+            <figure id="32df6e9d-1929-807b-bf6e-f45017646dd4" class="image"><img src="cover.png" /></figure>
+          </div>
+            <h1 class="page-title" dir="auto">시간을 파는 개발자, 구조를 만드는 개발자</h1>
+            <p class="page-description" dir="auto"></p>
+        </header>
+        <div class="page-body">
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8046-8a27-f8d83a96c88c" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-808d-b12c-fe62d4bcaf9a" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8011-bf6f-ec374764db9c" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8033-8508-cd0f31297c15" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h2 id="32df6e9d-1929-80dd-aee1-f647a4b95e6a" class="">목차</h2>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80c3-ac8f-f343c81cb6c3" class="bulleted-list">
+                    <li style="list-style-type:disc">챕터 1. 우리는 생각한다</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80c6-bb3f-d814526031e4" class="bulleted-list">
+                    <li style="list-style-type:disc">챕터 2. 왜 우리는 구조를 배우지 못했는가</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80ec-ba77-cc74ba3d7f01" class="bulleted-list">
+                    <li style="list-style-type:disc">챕터 3. 돈은 어떻게 만들어지는가</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80e0-bbf4-c2d3834e5392" class="bulleted-list">
+                    <li style="list-style-type:disc">챕터 4. 개발자는 어떻게 구조를 만들 수 있는가</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-8052-a45c-d53be4992b4f" class="bulleted-list">
+                    <li style="list-style-type:disc">챕터 5. 우리는 왜 실행하지 못하는가</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-8074-a8e7-ef36feab87ee" class="bulleted-list">
+                    <li style="list-style-type:disc">챕터 6. 구조를 바꾸는 현실적인 방법</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-802f-bbd1-e1d3e8e671ba" class="bulleted-list">
+                    <li style="list-style-type:disc">챕터 7. 개발자가 만들 수 있는 돈의 구조</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80d4-ad78-c5a1dff2cbe3" class="bulleted-list">
+                    <li style="list-style-type:disc">챕터 8. 결국 우리는 어떤 삶을 원하는가</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ba-a926-f512905ab6aa" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c5-8f28-dfff17108036" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a7-81e0-e8ca67372112" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h2 id="32df6e9d-1929-8072-81aa-cb406a4fc5e8" class="">프롤로그</h2>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h4 id="32df6e9d-1929-8022-88b0-fa7db31ba7dd" class=""><mark class="highlight-blue">삶을 설계하는 개발자</mark><br /></h4>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8051-b123-c5be378711c0" class="">어떠한 이유에서인지<br />종교나 가족에 대한 이야기는 의도적으로 제외했다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a2-a0bd-ef67b2fc7d70" class="">그 편이 더 공평하고,<br />조금 더 인간적인 이야기로 다가갈 수 있다고 생각했기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c5-84a7-c27f5495eb41" class="">개발자의 관점에서 쓴 글이니,<br />이 선택 역시 이해될 것이라 믿는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801a-8f65-e91e886a0ce9" class="">나는 INTJ이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8005-83dd-eff6f5cb46b7" class=""><mark class="highlight-teal"><mark class="highlight-default_background"><strong>Developer - dexter.</strong></mark></mark></p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8062-a0f6-e287e39bb565" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e4-bdf2-d1c7caad9169" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a8-98dc-c9d51f76d65a" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h1 id="32df6e9d-1929-80aa-a46c-d28fce517c29" class=""><div>챕터1.</div><br>우리는 생각한다.</h1>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f1-94d6-ce78cb672d8d" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809d-b56a-eee820aac9df" class="">우리는 끊임없이 생각한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8083-babb-fdaee3d804ad" class="">내가 하는 일이<br />내 삶에 얼마나 의미 있게 반영되는지,<br />혹은 얼마나 허무하게 흘러가고 있는지에 대해.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8032-a684-ddab9ca4c67f" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8055-93cb-cb2c70ed782d" class="">물론 알고 있다.<br />삶의 희로애락이 오직 ‘일’로만 결정되지 않는다는 것을.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80af-838c-e4b820effba4" class="">그럼에도 불구하고,<br />자신이 들인 시간과 노력이<br />얼마나 삶을 윤택하게 만드는지에 대한 질문은<br />인류가 오랫동안 붙잡고 있는 고민이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b8-a258-d336ea845ead" class="">그래서 질문은 결국 하나로 좁혀진다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80be-9ec8-e8fbfb4ce688" class="">우리는 왜 이렇게까지 일을 하면서도<br />그 결과가 삶의 여유로 이어지지 않는 걸까.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-804e-9c23-dc8e395510b9" class="">특히 개발자에게 이 괴리는 더 뚜렷하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c1-bd65-f142eb67a180" class="">끊임없이 기술을 배우고,<br />문제를 해결하며,<br />누군가의 비즈니스를 성장시키고 있음에도 불구하고<br />정작 자신의 삶은 크게 달라지지 않는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8001-9ece-e45259aa48c2" class="">많이 만들었지만, 많이 남지 않는다.<br />열심히 일했지만, 자유로워지지 않는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801f-9601-dca2e4b0735a" class="">이 이상한 구조는 어디에서 시작된 걸까.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8003-9fa3-c25aba6b6fd9" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-8064-a911-c0bfc1a14e27" class="bulleted-list">
+                    <li style="list-style-type:disc"> <strong>프리랜서와 회사에서의 생활</strong></li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f6-8d92-eb1365995dc6" class="">어느 순간부터 이런 생각이 들기 시작했다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-800e-a824-c48844948be8" class="">회사를 다니며 10년 넘게 개발을 해오면서<br />내 실력은 분명히 좋아졌다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80bc-8d7a-f2f4b2cbeeb3" class="">더 빠르게 만들 수 있게 되었고,<br />더 복잡한 문제도 해결할 수 있게 되었다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8007-a2e3-e6a4cb6e6a40" class="">하지만 이상하게도<br />삶이 그만큼 나아졌다는 느낌은 들지 않았다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ae-a7fa-f785a5db8e41" class="">업무 능력이 올라갈수록<br />책임과 피로도는 함께 증가했고,<br />지출 역시 자연스럽게 늘어났다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8046-b5f9-cc1147d40596" class="">이사로 출퇴근 거리는 더 멀어졌고,<br />물가 상승까지 겹치면서<br />열심히 일해도 여유는 쉽게 만들어지지 않았다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b7-b46b-cb5c79b33d46" class="">이런 흐름 속에서<br />나는 자연스럽게 다른 선택지를 바라보게 되었다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ab-a707-dc5d33e17570" class="">프리랜서.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a3-8b7f-c3d3ea3e1de6" class="">그 매력은 단순했다.<br />회사에 가지 않아도 된다는 것,<br />그리고 눈치를 보지 않아도 된다는 것.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a9-b7fd-f6738098ef1e" class="">정해진 시간에 출근하지 않아도 되고,<br />같은 자리에 묶여 있을 필요도 없다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80df-bc7f-c699a99979f2" class="">눈이 떠지는 시간에 일어나<br />원하는 카페에서 일을 시작하는 것만으로도<br />전혀 다른 만족감이 느껴졌다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801d-a2c6-e06b0ce20cae" class="">집에 돌아오는 시간은 비슷했지만,<br />하루를 보내는 방식이 바뀌자<br />삶의 만족도는 분명히 높아졌다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f9-ad95-f9979f5bd3c4" class="">사람은 지칠 때쯤<br />새로운 활력이 필요하다는 것을 알게 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8089-816a-f3243deff972" class="">같은 일을 하더라도<br />구조가 바뀌면 전혀 다른 감각으로 받아들여진다.<br />그 변화만으로도 다시 버틸 수 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e2-a3a0-d9ca3c1e2179" class="">그렇게 1년, 2년이 흘렀다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8039-9017-eba8a8e2284c" class="">다시 안정감을 느끼기 시작했다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8096-b56c-f4439ee91ec9" class="">하지만 그 안정감은 오래가지 않았다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a5-8bbd-f56f760a7a4c" class="">또 다른 질문이 떠올랐다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8002-958f-d404bbf20e9a" class="">나는 결국,<br />시간을 써야만 돈을 벌 수 있는 구조 안에 있는 것은 아닐까.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a3-a9ea-d2056ff3d063" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+              <!-- <pre>
+                while ($energy &gt; 0 || $caffeine &gt; 0) {
+                  $money += ($work_intensity * $time);
+                  $energy -= 10;  // 기력 감소
+                  if ($energy &lt;= 0 &amp;&amp; $coffee_count &lt; 5) {
+                    drink_coffee(); // 카페인으로 에너지 강제 펌핑
+                    $caffeine += 50;
+                    $money -= min_max(2000, 5000); // 커피값 지출 (배보다 배꼽이 더 클지도?)
+                  }
+                  if ($time &gt; $regular_work_hour) {
+                    $mental_health--; // 야근은 정신 건강에 해롭습니다.
+                  }
+                }
+              </pre> -->
+              <div style="border-radius:0.5em; overflow:hidden;">
+                <img  src="code1.png"  style="width:100%; height:auto; object-fit:cover;"/>
+              </div>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d5-ab7e-cc4debd4d0ac" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8023-8205-dd26090cf978" class="">일은 결국<br />시간과 에너지를 넣으면 돈이 나오는 구조다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ef-87d7-e809225438f7" class="">시간이 흐르면 돈은 소비되고,<br />몸과 정신은 점점 소모된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-805d-9a5d-d73dab3db28c" class="">하지만 돈을 벌기 위해서는<br />멈출 수 없다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-800a-aea7-ebd20cd9e8b3" class="">멈추는 순간,<br />모든 것이 멈춘다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8091-81f2-e4176988167c" class="">많은 개발자들이 믿는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e5-9ce7-e08344c77d80" class="">실력이 올라가면<br />수입도 자연스럽게 올라갈 것이라고.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a3-8721-eb0ef0897bc5" class="">틀린 말은 아니다.<br />초기에는 분명히 그렇다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-804b-b165-ff202aeb1e81" class="">하지만 어느 순간부터<br />이 공식은 더 이상 작동하지 않는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f9-9c96-ea1f20bd244d" class="">아무리 실력이 올라가도<br />하루의 시간은 늘어나지 않는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-807a-b0d0-caaf2b62f08c" class="">결국 우리는 같은 구조 안에서<br />단가만 올리고 있을 뿐이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c7-be0f-dbbb364deefb" class="">시간을 더 쓰고,<br />몸을 더 혹사시키고,<br />더 많은 책임을 떠안으면서.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b7-8e58-fe5cf9e2b518" class="">그렇게 만들어진 수입은<br />언제든 멈출 수 있는 수입이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ac-84e6-d6b67aeaff08" class="">여기서 차이가 생긴다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80df-a103-c51ac1e0b364" class="">누군가는 여전히<br />자신의 시간을 팔고 있고,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801e-bb2d-e4ab9e323ccc" class="">누군가는<br />시간을 팔지 않아도 돌아가는 구조를 만든다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e9-83cd-d3aeed395351" class="">이 차이는 직업의 차이가 아니다.<br />구조의 차이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8087-a13c-c206086dc51d" class="">개발자는 문제를 해결하는 사람이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8000-abb7-da178ec5b6c3" class="">하지만 이상하게도<br />자신의 수익 구조에 대해서는<br />문제로 인식하지 않는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8057-b647-c647cbabbd4d" class="">더 좋은 코드를 짜는 데에는 집착하면서도<br />더 나은 구조를 만드는 데에는 무심하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802c-9c04-d9bda5b49451" class="">생각해보면 이상하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8081-8bda-fa12a27418a7" class="">자동화를 만들고,<br />시스템을 만들고,<br />반복을 줄이는 일을 하는 사람들이</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809e-b418-f9fbda93326a" class="">정작 자신의 삶에서는<br />가장 비효율적인 구조에 머물러 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b9-a97f-e51e5899a601" class="">우리는 이미 알고 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f5-83fc-d9e352d316e5" class="">이 구조를 벗어나지 않는 한<br />아무리 오래, 열심히 일해도<br />결과는 크게 달라지지 않는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b9-97e5-cab2676d21ca" class="">그래서 질문은 다시 돌아온다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c4-80d2-f5a0b822507b" class="">왜 우리는 이 구조를 벗어나지 못하는가.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e2-9d6d-d1b29e75033c" class="">우리는 기술을 배우는 데에는 익숙하지만,<br />구조를 설계하는 법은 배우지 못했다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f3-8d74-e15e281c413e" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h1 id="32df6e9d-1929-80ae-83eb-cbed045884d6" class=""><div>챕터2.</div><br>왜 우리는 구조를 배우지 못했는가</h1>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f9-8cfd-fc1d65eb8bc7" class="">우리는 분명히 배워왔다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d2-9fc0-f6b22efed525" class="">문제를 해결하는 법을,<br />더 효율적인 코드를 짜는 법을,<br />더 빠르게 결과를 만들어내는 방법을.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-808b-a7af-fae189dfc2d5" class="">하지만 단 한 가지는 배우지 못했다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f8-b641-cff2ffcd29d5" class="">구조를 설계하는 법.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-806a-ba09-c810212275cc" class="">우리가 처음 개발을 배울 때,<br />가장 먼저 접하는 것은 문법이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f9-9fcc-eec2651da247" class="">변수, 조건문, 반복문.<br />그리고 함수와 클래스.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-800e-a12e-c20ad9ffdfb1" class="">조금 더 나아가면<br />프레임워크를 배우고,<br />아키텍처를 배우고,<br />협업 방식을 배운다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-807a-82b4-f1777f4b2fec" class="">하지만 이 모든 것은<br />결국 하나를 위한 것이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8085-931a-f59787630694" class="">“주어진 문제를 해결하는 것.”</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8038-baff-d208aebaeb3c" class="">문제는 여기서 시작된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a8-b42c-dadab71f30cd" class="">우리는 항상<br />“문제가 주어지는 입장”에 익숙해져 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-804f-aaa9-df56a4bf23e0" class="">누군가가 요구사항을 정리해주고,<br />누군가가 방향을 결정해주고,<br />우리는 그 안에서 최적의 해답을 만들어낸다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8077-8f33-e616956d05da" class="">이 과정은 효율적이다.<br />그리고 안정적이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8069-ba87-e5afda403681" class="">하지만 동시에<br />아주 위험한 구조이기도 하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8050-82b8-f76381fbc6ed" class="">왜냐하면 이 구조 안에서는<br />우리가 스스로 질문을 만들 필요가 없기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8013-a901-fa13dc275dfd" class="">무엇을 만들어야 하는지,<br />왜 만들어야 하는지,<br />이걸 만들어서 무엇을 얻어야 하는지.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8022-ab6f-f17d3c8f620d" class="">이 질문들은 대부분<br />우리의 역할 밖에 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-804d-88cf-edd594d7a3b3" class="">우리는 그저<br />주어진 문제를 잘 해결하는 사람으로 남는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8047-a432-c1e0ec7cf8d1" class="">그래서 시간이 지나도<br />우리는 여전히 같은 방식으로 일한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8044-ab01-ff9d537d429d" class="">더 빠르게,<br />더 정확하게,<br />더 많이.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8004-97e5-ed5c0a6e69d4" class="">하지만 방향은 여전히<br />누군가에 의해 결정된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d5-bf79-c3b3fb82a663" class="">이 차이는 작아 보이지만<br />결과에서는 극단적으로 갈린다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a1-a7db-f3f19863f363" class="">누군가는 문제를 해결하면서 돈을 벌고,<br />누군가는 문제 자체를 만들어내면서 돈을 번다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-807e-882d-f11b44a9a279" class="">이 둘은 전혀 다른 게임이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802a-a2df-e528b9464ce3" class="">문제를 해결하는 사람은<br />항상 시간과 맞바꾼다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-804a-879a-cee5fe40828e" class="">하지만 문제를 만드는 사람은<br />구조를 만든다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-806e-8189-c8a7f19ce9ab" class="">구조는 반복된다.<br />그리고 반복은 돈을 만든다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801b-8cbf-ebcf0adb0d17" class="">여기서 우리는 한 가지 착각을 하게 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809d-82a2-dc70232e3208" class="">“더 잘 만들면, 더 많이 벌 수 있다.”</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8009-9011-f07848abb099" class="">부분적으로는 맞다.<br />하지만 구조를 바꾸지 않는 한<br />그 증가에는 한계가 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80df-85a7-c8448efae6ad" class="">아무리 뛰어난 개발자라도<br />하루 24시간이라는 제한에서 벗어날 수는 없다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801b-b4d5-d19cffdc57f1" class="">그래서 우리는<br />결국 같은 벽에 부딪힌다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8026-ac80-d64c2732ce87" class="">더 이상 시간을 늘릴 수 없는 순간.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8024-8f4b-ee830bad3030" class="">그때서야<br />우리는 처음으로 생각하게 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-807f-b212-ca11ca081a2d" class="">“다른 방법은 없는 걸까.”</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809c-928a-d3feb91457ed" class="">하지만 이미 우리는<br />오랫동안 하나의 방식에 익숙해져 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8004-bbc7-eda22a4fe087" class="">누군가의 문제를 해결하고,<br />그 대가로 돈을 받는 방식.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809f-8388-e5776e21a2b6" class="">이 구조는 너무 자연스럽기 때문에<br />의심조차 하지 않는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c3-a065-e4ba8a0e1132" class="">그리고 이것이<br />우리가 구조를 배우지 못한 이유다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8099-b7b1-d830b693605b" class="">배운 적이 없어서가 아니라,<br />필요했던 적이 없었기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802e-8da6-c8a9ff162912" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h1 id="32df6e9d-1929-8085-8a39-ee14d93fe9fd" class=""><div>챕터3.</div><br>돈은 어떻게 만들어지는가</h1>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8074-9da6-d281845b0162" class="">우리는 돈을 번다고 생각한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-806f-8359-cb06b2a67e42" class="">하지만 정확히 말하면,<br />우리는 돈을 “만든다”기보다<br />특정한 방식으로 “교환”하고 있을 뿐이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8016-bcc7-ff5c2655c1fb" class="">대부분의 사람들은<br />자신의 시간과 노동을<br />돈과 교환한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801e-b4d3-d25168b02333" class="">이 구조는 단순하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c3-8a78-c0d918b70ba2" class="">시간을 쓰면 돈이 생기고,<br />시간을 멈추면 돈도 멈춘다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8099-9ea0-db68e5383735" class="">이것이 우리가 가장 익숙한 방식이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e3-89a9-f95ebe11fa94" class="">그리고 개발자 역시<br />이 구조 안에 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8058-bfb4-e1a5977a9863" class="">조금 더 많이 벌기 위해서는<br />더 오래 일하거나,<br />더 높은 단가를 받아야 한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8096-94ae-f5010f7ef834" class="">하지만 이 방식에는<br />명확한 한계가 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8018-8d08-fd4e76288c43" class="">시간은 늘릴 수 없다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8003-a7b5-eae40aedabae" class="">그래서 우리는<br />다른 방식의 존재를 알아야 한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8047-849e-fa33b25166d6" class="">돈이 만들어지는 방식은<br />크게 세 가지로 나눌 수 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802c-bd87-d05f29ed248d" class="">첫 번째는<br />노동 기반 수익이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a4-98ae-cedb59fd6cc7" class="">가장 직관적이고,<br />가장 흔한 방식이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e0-ba0a-ce4749fa1c67" class="">일을 하면 돈을 받는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e2-95f4-d4b1d5b9c748" class="">하지만 이 구조는<br />반드시 한계를 가진다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801b-a140-e68872ea486e" class="">시간에 묶여 있기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f6-a661-d444d6722a8b" class="">두 번째는<br />자산 기반 수익이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809e-9b04-c76f74ab24fe" class="">자산이 돈을 만들어낸다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8008-9bb5-f93af1a24c76" class="">부동산, 주식,<br />혹은 콘텐츠와 같은 것들이 여기에 포함된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8040-b3a7-e04a3516e26f" class="">이 구조에서는<br />내가 직접 움직이지 않아도<br />수익이 발생할 수 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8021-bf60-cf9fa7095cd1" class="">하지만 자산을 만들기 위해서는<br />초기 자본이나 시간이 필요하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802a-959c-c7bd9b94d82d" class="">그리고 대부분의 사람들은<br />이 단계까지 오지 못한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8004-9e63-fa20b80e9a80" class="">그래서 더 중요한 것은<br />세 번째다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c8-8b01-f46904cae462" class="">세 번째는<br />시스템 기반 수익이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e4-adfb-f5d7c7f3143d" class="">이건 조금 다르다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80cc-bdf2-f633a4dd414f" class="">처음에는<br />시간과 노력이 들어간다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8090-bca1-c44bcbd4ca90" class="">하지만 한 번 구조가 만들어지면<br />그 이후부터는 반복된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-808d-b10e-dfdfb6b08a85" class="">예를 들어,<br />한 번 만든 서비스,<br />한 번 만들어놓은 코드,<br />한 번 구축된 흐름.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-805c-80bd-ebea80ac027a" class="">이것들은<br />내가 계속 일하지 않아도<br />가치를 만들어낸다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803e-9347-fb4d01f6c2b8" class="">여기서 중요한 것은<br />“반복 가능성”이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b5-b6ec-db473b0a46d3" class="">노동은 반복될수록<br />피로가 쌓인다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d5-8167-c2f4c4a40337" class="">하지만 시스템은 반복될수록<br />효율이 쌓인다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d3-9174-e6710b098ee7" class="">이 차이는<br />시간이 지날수록 더 크게 벌어진다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802e-8f83-c71c2d397e3e" class="">개발자는<br />이 구조를 만들 수 있는 몇 안 되는 직업이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8034-960c-eb6f9a708d1d" class="">그럼에도 불구하고<br />대부분의 개발자는<br />여전히 첫 번째 방식에 머물러 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80eb-9e61-f684b4036d2e" class="">왜일까.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8067-8b22-d38bb70e33b7" class="">우리는 이미 알고 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d6-82c8-e14511eba0f6" class="">문제를 해결하는 법은 배웠지만,<br />구조를 만드는 법은 배우지 못했기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8080-a1f0-e64a78a511ea" class="">그래서 다시 질문해야 한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f2-b1d2-c37543dbf633" class="">나는 지금<br />어떤 방식으로 돈을 만들고 있는가.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8034-9860-cdc57b6ca218" class="">그리고 더 중요한 질문.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f6-abe4-fe95b8e29577" class="">이 구조는<br />나를 어디로 데려갈 것인가.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h1 id="32df6e9d-1929-8064-b1d8-fac411fc383a" class=""><div>챕터4.</div><br>개발자는 어떻게 구조를 만들 수 있는가</h1>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80bf-8c59-d90d83a0a548" class="">구조를 만든다는 것은<br />거창한 일이 아니다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803e-bb05-f255cf7b9300" class="">처음부터 대단한 서비스를 만들 필요도 없고,<br />큰 자본이 필요한 것도 아니다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8067-810d-f2eff27a066f" class="">구조는 생각보다 단순한 곳에서 시작된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f9-a274-c3663c093405" class="">우리가 반복하고 있는 일,<br />여러 번 비슷하게 만들어본 기능,<br />매번 비슷하게 해결했던 문제들.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8031-88da-ee8eeee02150" class="">이미 우리는<br />수많은 “반복”을 경험하고 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8009-a541-e47d0efb445d" class="">문제는 이것을<br />그때그때 해결하고 끝낸다는 점이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802c-9a9a-f40b8344751b" class="">구조를 만든다는 것은<br />이 반복을 “자산으로 바꾸는 것”이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809c-b701-e7a1d0cc2b1a" class="">다시 말해,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802f-b9aa-c5e93bbdbba8" class="">한 번 만든 것을<br />여러 번 사용할 수 있게 만드는 것.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803c-8aec-ea8c162b8573" class="">이 차이가<br />노동과 구조를 가르는 기준이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-804a-b55f-f2ac14ca699f" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-80cd-b23d-c01743d5810c" class="numbered-list" start="1">
+                    <li><strong>반복되는 일을 코드로 고정시키기</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ff-b838-f8c83ee040fc" class="">개발자는 이미<br />자동화를 만들 수 있는 능력을 가지고 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ba-bbd0-d68af34eaa98" class="">그럼에도 불구하고<br />많은 작업을 여전히 수동으로 반복한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ca-800a-f488c7f659ea" class="">예를 들어,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8068-8c80-f8115b388133" class="">매번 새로 만드는 관리자 페이지<br />반복되는 API 구조<br />비슷한 형태의 쇼핑몰, 랜딩 페이지<br />고객마다 반복되는 커스터마이징 작업</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-805f-b365-c7298a3fe074" class="">이것들을 단순히 “일”로 처리하면<br />그 순간의 돈으로 끝난다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8006-80b2-ef64d833057c" class="">하지만 이것을<br />템플릿, 라이브러리, 서비스 형태로 만들면<br />이건 더 이상 일이 아니다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ac-a784-c1e498740985" class="">구조가 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8016-af30-d5f6dff085eb" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-8061-90f9-cf0683ff9f01" class="numbered-list" start="2">
+                    <li><strong>결과물이 아니라 흐름을 만든다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8070-a207-cdadba9584aa" class="">대부분의 개발자는<br />“결과물”을 만든다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8019-bc81-c215368a9e87" class="">하지만 구조를 만드는 사람은<br />“흐름”을 만든다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-800c-97c5-ddca0e7168e4" class="">예를 들어,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8069-93ba-e6ade5a51c47" class="">웹사이트 하나를 만들어주는 것과<br />웹사이트를 쉽게 만들 수 있는 시스템을 만드는 것은<br />완전히 다른 이야기다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-805e-a663-c8825628dbcd" class="">전자는 한 번으로 끝나지만,<br />후자는 계속해서 반복된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8074-b4b7-ffae6989f3ca" class="">여기서 중요한 것은<br />기술의 난이도가 아니다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-805b-8c23-fb5cbcf14f0c" class="">관점이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803e-95d0-c0a8d81933e6" class="">“이걸 한 번 더 만들지 않으려면 어떻게 해야 할까”</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80fd-8bdd-e12bbd570594" class="">이 질문 하나가<br />구조를 만든다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80bd-a20c-c2c989b6b586" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-800f-a270-ccf44d8f51af" class="numbered-list" start="3">
+                    <li><strong>작게 만들어도 괜찮다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d0-86b4-e3ef45464b86" class="">많은 사람들이<br />구조를 만든다고 하면<br />큰 서비스를 떠올린다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-806d-a73c-f86bf6a9aa54" class="">하지만 대부분의 구조는<br />아주 작은 형태로 시작된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8037-bb8f-d352c955a1ee" class="">특정 기능만 제공하는 API<br />반복 작업을 줄여주는 간단한 툴<br />특정 문제만 해결하는 마이크로 서비스</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8089-8a1e-e4910d1cb6da" class="">이런 것들도 충분히<br />돈을 만드는 구조가 될 수 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8044-9a95-d7516c5ef92c" class="">중요한 것은 규모가 아니라<br />반복 가능성이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8011-aea2-f4cc37435bc9" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-800f-bde4-f7eae3aea03d" class="numbered-list" start="4">
+                    <li><strong>처음에는 돈이 안 될 수도 있다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8038-87a4-fb3cfdc6dfec" class="">여기서 많은 사람들이 포기한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8049-8220-f52fbdf51fe8" class="">구조를 만들기 시작하면<br />초기에는 오히려 돈이 덜 벌릴 수 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c2-9007-f8085fd6640c" class="">왜냐하면<br />지금까지 하던 “즉시 돈이 되는 일”을 줄이고,<br />미래를 위한 작업을 해야 하기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809c-9140-eaaf8d2a2f9b" class="">이 구간은 불편하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8059-8677-e406ad1670d6" class="">그리고 불안하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8071-881b-d95a2cb62a27" class="">그래서 대부분은<br />다시 원래 방식으로 돌아간다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8079-8da6-f6c854bd668b" class="">하지만 이 구간을 넘어서야<br />비로소 차이가 생긴다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8015-8d12-ee103d21cc61" class="">시간을 쓰지 않아도<br />결과가 만들어지는 경험.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-804a-9724-c513fbb43abe" class="">이 경험이 쌓이기 시작하면<br />더 이상 이전으로 돌아가기 어렵다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e7-94e8-dd8a64efdf77" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-80e6-a0d1-c9f90a79d10c" class="numbered-list" start="5">
+                    <li><strong>완벽하지 않아도 된다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80fa-a55d-dac85163a457" class="">많은 개발자들이<br />구조를 만들지 못하는 이유 중 하나는<br />완벽주의다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802a-ab00-e90a1eab3023" class="">더 좋은 구조를 고민하다가,<br />더 나은 기술을 찾다가,<br />결국 아무것도 만들지 않는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-806d-a600-f65113ce6b08" class="">하지만 구조는<br />완벽하게 만드는 것이 아니라<br />“작동하게 만드는 것”이 먼저다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8040-8331-e0b8a951ca59" class="">작게 만들고,<br />돌려보고,<br />필요하면 개선하면 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8075-a823-d7a1abdccd45" class="">중요한 것은<br /><strong>“시작”</strong>이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h1 id="32df6e9d-1929-8052-94eb-c79c4292ae4d" class=""><div>챕터5.</div><br>우리는 왜 실행하지 못하는가</h1>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80bf-9e46-ebec725e4296" class="">우리는 이미 알고 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8010-9fc2-cb1b81d5cac2" class="">반복되는 일을 줄여야 한다는 것도,<br />구조를 만들어야 한다는 것도,<br />시간을 팔지 않는 방향으로 가야 한다는 것도.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e3-8cd9-f0fdcb842d92" class="">그럼에도 불구하고<br />대부분은 그대로 머문다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8075-b651-d16f8dba09b6" class="">이건 의지의 문제가 아니다.<br />능력의 문제도 아니다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8071-96bd-c11650fca9dd" class="">구조의 문제가 아니라,<br />“상태”의 문제다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-805a-9efa-c65a5dcfe54c" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-80e4-ae77-d8b58fcff9bf" class="numbered-list" start="1">
+                    <li><strong>시간이 없어서가 아니라, 여유가 없다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8022-813a-eb80506f24b6" class="">많은 사람들이 말한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d6-8977-f242a582647f" class="">“시간이 없어서 못 한다.”</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8000-b71d-c827657a4d77" class="">하지만 정확히 말하면<br />시간이 없는 것이 아니라<br />여유가 없는 상태다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b7-8691-e4403daaa3b4" class="">하루 일을 마치고 나면<br />에너지가 남아 있지 않다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f8-a1e2-c3cd288afd95" class="">이미 일을 하면서<br />모든 집중력과 체력을 써버렸기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b9-9cc6-fdee9dc5ed81" class="">이 상태에서는<br />새로운 구조를 만드는 일이 아니라,<br />그저 쉬는 것이 우선이 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8085-aec0-de6330529c4c" class="">그래서 우리는<br />다시 같은 하루를 반복한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8014-b6ba-de538718f49c" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-8086-bf79-c874d640b2dd" class="numbered-list" start="2">
+                    <li><strong>지금의 수익을 포기할 수 없다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8057-9fc1-f6dd29768f6b" class="">구조를 만든다는 것은<br />당장의 수익을 일부 포기하는 일이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-804e-8da6-fe87c22d0f4e" class="">지금까지는<br />시간을 쓰면 바로 돈이 들어왔다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8004-9dca-c597ab2ed5a6" class="">하지만 구조를 만드는 일은<br />바로 돈이 되지 않을 수 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8005-ab0b-f2722edf755e" class="">이 차이는 생각보다 크다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-808e-8f17-c163520193e8" class="">눈에 보이는 수익을 포기하고,<br />보이지 않는 가능성에 투자하는 일.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-807b-b844-fb89f172ec0a" class="">이건 단순한 선택이 아니라<br />심리적인 장벽이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8083-9230-e68cdfe3935e" class="">그래서 우리는<br />안전한 선택을 반복한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8000-9eb9-da10bf3236aa" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-8012-a4c3-e2178e6b66d4" class="numbered-list" start="3">
+                    <li><strong>실패 비용이 너무 크게 느껴진다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d6-839f-c061c37cfd19" class="">만약 구조를 만들다가 실패하면<br />그 시간은 아무 의미가 없어진 것처럼 느껴진다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-806a-a314-f4e42b30a785" class="">하지만 일을 하다가 쓴 시간은<br />항상 돈으로 환산된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8091-8e95-e97d98fc4d4d" class="">이 차이 때문에<br />우리는 더더욱 구조를 피하게 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803c-a6c8-f2e72ebc572f" class="">하지만 사실은 반대다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f0-9691-d099a9daec67" class="">일을 하며 쓴 시간은<br />그 순간에 끝나지만,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8028-91e0-cc97180f45c4" class="">구조를 만들다가 쓴 시간은<br />나중에 계속해서 영향을 미친다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803f-9d0c-e26184cbb6bb" class="">문제는<br />이걸 체감해본 적이 없다는 것이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80fb-975f-e5c05fdc88f6" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-80ab-b8ff-ebeb0a7e7a17" class="numbered-list" start="4">
+                    <li><strong>방향이 없으면 시작할 수 없다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803d-8caf-cf43a39c686d" class="">많은 개발자들이<br />“무엇을 만들어야 할지 모르겠다”고 말한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c4-aa20-f9531a60b4a3" class="">이건 자연스러운 상태다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b1-af92-f0c40cda0ab7" class="">우리는 지금까지<br />“주어진 문제”를 해결하는 데 익숙했기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8086-bfc4-f63b4db88b84" class="">하지만 구조를 만든다는 것은<br />문제를 스스로 정의하는 일이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-800a-8bfc-c95316200031" class="">이건 전혀 다른 영역이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8066-876d-d2b26712cfe0" class="">그래서 대부분은<br />생각만 하다가 멈춘다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ca-9aff-e83b58fd6d68" class="">완벽한 아이디어를 찾으려고 하다가<br />아무것도 시작하지 못한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80fb-b238-c38012bc185c" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-805a-8754-d0fdeb653996" class="numbered-list" start="5">
+                    <li><strong>아직 절박하지 않다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ef-b2b6-ee25179e428c" class="">이건 조금 불편한 이야기일 수 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ea-8195-e3158974e456" class="">사실 많은 경우<br />우리는 아직 충분히 괜찮다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f7-8087-f6722d1d405f" class="">지금의 수입으로도<br />어느 정도는 살아갈 수 있고,<br />크게 불편하지 않다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e8-b2ae-e7379193a92a" class="">그래서 굳이 바꿀 이유가 없다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d7-b217-e3a82e2cba2e" class="">하지만 이 상태는<br />천천히 우리를 묶어둔다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ae-aed6-eb85f451dbc1" class="">시간이 지날수록<br />변화의 비용은 더 커지고,<br />움직이기는 더 어려워진다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8022-9b0b-eb6a2b89b014" class="">우리는 실행하지 못하는 것이 아니라,<br />지금의 구조에서 벗어나지 못하는 것이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-804e-b434-d0554de294e6" class="">이건 의지가 약해서가 아니라<br />환경이 그렇게 만들어져 있기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8013-acfc-eef77ead1432" class="">그래서 해결 방법도 단순하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8099-86e3-fd334c2af254" class="">의지를 강화하는 것이 아니라,<br />구조를 바꿔야 한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8066-b68a-edfd212d822c" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h1 id="32df6e9d-1929-807a-b1f4-fd2075db5708" class=""><div>챕터6.</div><br>구조를 바꾸는 가장 현실적인 방법</h1>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8050-854b-f468a989623e" class="">우리는 이미 알고 있다.<br />문제도 알고 있고, 방향도 알고 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8020-b768-e13123ca2cfc" class="">이제 남은 것은 단 하나다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809b-9b4c-ebc2de00ad00" class="">실제로 바꾸는 것.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80da-a1b5-e8daefc324dc" class="">하지만 여기서 대부분 멈춘다.<br />이유는 간단하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8035-a304-eae6b59fa32b" class="">방법이 추상적이기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-808c-856d-c22b61034330" class="">그래서 필요한 것은<br />거창한 전략이 아니라,<br />지금 당장 실행 가능한 방식이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b7-9214-e7d3e554b1ae" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-80d3-963a-c34fc3aae21d" class="numbered-list" start="1">
+                    <li><strong>시간을 만들려고 하지 말고, 구조를 바꿔라</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a8-b813-f77e9ecbe6a0" class="">많은 사람들이<br />“시간을 따로 내서 해야지”라고 생각한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ca-9ec2-c6917f8a3f1b" class="">하지만 현실은 그렇지 않다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80cd-96c4-c60fdaaa8e7c" class="">일을 하고 남는 시간으로<br />새로운 구조를 만든다는 것은<br />생각보다 오래 지속되기 어렵다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80df-a6da-feeb19a9a970" class="">그래서 접근을 바꿔야 한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8098-a73a-e69be9bb547c" class="">기존 일을 줄이면서 시작해야 한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a3-94df-ed262ec771ad" class="">100% 일을 하던 상태에서 → 90%로 줄이고<br />남은 10%를 구조 만드는 데 쓴다</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8084-9ea1-f1f66c09ced1" class="">이 10%가<br />미래를 바꾸는 시간이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8099-b3cd-d8c1e492680e" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-80a6-9f7d-e94ae3d55ad7" class="numbered-list" start="2">
+                    <li><strong>“돈 되는 일”과 “구조 만드는 일”을 분리하지 마라</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e3-a244-cfa4214009a8" class="">많은 사람들이<br />이 둘을 완전히 다른 것으로 생각한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-808c-ae69-ee5463a1fb96" class="">하지만 가장 현실적인 방법은<br />지금 하고 있는 일 안에서<br />구조를 만드는 것이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e3-89a3-c509fc21a49f" class="">예를 들어,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f2-9d93-ddf40b46d6b4" class="">반복되는 기능 → 모듈화<br />자주 쓰는 코드 → 패키지화<br />여러 번 만드는 서비스 → 템플릿화</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8047-af27-d54983b2592a" class="">이렇게 하면<br />“돈 되는 일”이<br />곧 “구조 만드는 일”이 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8001-8f90-e95933af6611" class="">이게 핵심이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801c-b4b7-ef9557bcefa8" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-80ef-bdd7-d1aa8c0e687b" class="numbered-list" start="3">
+                    <li><strong>작게 팔아보고, 나중에 키워라</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809a-b3e2-f7236af50ae2" class="">처음부터 완벽한 서비스를 만들 필요는 없다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80dc-a76c-c35940a67169" class="">오히려 반대다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-801e-83ca-df7e02a47027" class="">작게 만들어서<br />바로 팔아봐야 한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8004-9637-efefff0420e9" class="">왜냐하면<br />돈이 되는 구조는<br />아이디어가 아니라<br />“검증”에서 나오기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8070-aa4c-d80741290cb3" class="">작은 기능 하나<br />단순한 자동화 하나<br />특정 문제 하나 해결</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8083-9674-cc0e87af5262" class="">이 정도로 충분하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ed-ae6c-ca36eb53812a" class="">중요한 건<br /><mark class="highlight-blue"><strong>**“누군가 돈을 내는가”**</strong></mark>다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8094-903c-ed8559f3bffc" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-8086-8a40-f3680eb01e8a" class="numbered-list" start="4">
+                    <li><strong>실패 비용을 줄여라</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80bf-9ccf-c5a226c0f1ee" class="">구조를 만들다 포기하는 이유는<br />실패가 크게 느껴지기 때문이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8094-a088-c99b506faaf8" class="">그래서 전략이 필요하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803b-bdbb-e768c284a01f" class="">개발 기간을 짧게 가져간다<br />기능을 최소화한다<br />빠르게 결과를 확인한다</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803a-b6fd-f40ce6ae7d8e" class="">이렇게 하면<br />실패해도 타격이 작다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-800c-8bbd-f9036ef02d79" class="">그리고 이 경험이 쌓이면<br />점점 더 빠르게 시도할 수 있게 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8041-abe8-f8123d1a23ad" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-806f-8647-d262ca78dad2" class="numbered-list" start="5">
+                    <li><strong>“완성”이 아니라 “흐름”을 만든다</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-807a-b42a-c31f8a44e99b" class="">많은 사람들이<br />하나를 완벽하게 만들려고 한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8066-9585-e2b9c70b3f91" class="">하지만 중요한 건<br />하나의 결과물이 아니라<br />지속적으로 만들어내는 흐름이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b2-bf07-de388037ca8d" class="">한 번 만들고 끝나는 것이 아니라,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8016-aeaf-eb4884e9fe92" class="">만들고<br />팔아보고<br />개선하고<br />다시 만든다</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f5-b60a-ccf1ff20190b" class="">이 사이클이 돌아가기 시작하면<br />이미 구조는 만들어진 것이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h4 id="32df6e9d-1929-8029-8fe1-d8d26da772df" class=""><strong>핵심 전략 요약</strong></h4>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-801a-b586-c5d5dfe0f878" class="bulleted-list">
+                    <li style="list-style-type:disc">시간을 따로 만들지 말고, 기존 일을 줄인다</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-8086-8d65-c11a710a1862" class="bulleted-list">
+                    <li style="list-style-type:disc">지금 하는 일 안에서 구조를 만든다</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-8070-9e0e-d2af43625345" class="bulleted-list">
+                    <li style="list-style-type:disc">작게 만들어서 바로 팔아본다</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80c9-ace1-d5f289cd6012" class="bulleted-list">
+                    <li style="list-style-type:disc">실패 비용을 낮춘다</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80a7-900b-c1e9b18230cc" class="bulleted-list">
+                    <li style="list-style-type:disc">반복 가능한 흐름을 만든다</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80eb-bb8d-c1fa869c1173" class="">이건 특별한 사람이 하는 방식이 아니다.<br />현실에서 가장 실행 가능한 방식이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8023-a160-faee850e534b" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h4 id="32df6e9d-1929-80a5-a89b-e80308f5db35" class=""><strong>중요한 변화</strong></h4>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80df-b7fe-ca6ac812529f" class="">이 과정을 거치면서<br />하나의 변화가 생긴다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8090-b3ef-ffc78086547b" class="">더 이상<br />“시간을 팔아서 돈을 버는 사람”이 아니라,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802d-8b61-d573a1602415" class="">“구조를 만들어 돈을 만드는 사람”으로<br />조금씩 바뀌기 시작한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8021-955a-c9cba68032ca" class="">이 변화는 작지만,<br />시간이 지날수록 결정적인 차이를 만든다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8092-8ffc-c02bd7e292ca" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h1 id="32df6e9d-1929-8033-9c26-ff09d88ed6f3" class=""><div>챕터7.</div><br>개발자가 만들 수 있는 돈의 구조들</h1>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8064-ab2d-c37de5018b7b" class="">이제 질문은 명확해졌다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d0-bed2-eef32f1f0b8d" class="">구조를 만들어야 한다는 것도 알고 있고,<br />어떻게 시작해야 하는지도 이해했다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b2-b0fa-d8b0221a14f1" class="">그렇다면 남은 것은 하나다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8094-af32-cb0d3cf747f0" class="">무엇을 만들 것인가.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80be-8ee3-d25bc1e3eb83" class="">개발자가 만들 수 있는 구조는 생각보다 다양하다.<br />하지만 대부분은 몇 가지 유형으로 정리된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d2-9cb2-e795dc7b1618" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-80f7-98b7-e5660a58062f" class="numbered-list" start="1">
+                    <li><strong>SaaS (서비스 자체가 돈이 되는 구조)</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-806d-8598-e69d34e11e22" class="">가장 강력한 구조다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8002-a84c-ddf555a8ee90" class="">한 번 만든 서비스가<br />여러 사용자에게 반복적으로 판매된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b9-946a-d2e95acf233a" class="">월 구독<br />사용량 기반 과금<br />기능 제한 / 업그레이드 모델</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8048-81f3-fd5b57c576f7" class="">이 구조의 핵심은 단순하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8000-bc1a-f5fdebbea8ea" class="">“한 번 만들고, 여러 번 판다.”</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8000-b922-f4195b5b4c3b" class="">예를 들어,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80dd-9bc9-fdd5056a0b7b" class="bulleted-list">
+                    <li style="list-style-type:disc">예약 관리 시스템</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-809b-8713-f702be324a5d" class="bulleted-list">
+                    <li style="list-style-type:disc">간단한 CRM</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80b7-b532-e0e449db2b53" class="bulleted-list">
+                    <li style="list-style-type:disc">특정 업종 전용 툴</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80b0-9906-e5c8e4d82369" class="bulleted-list">
+                    <li style="list-style-type:disc">반복 업무 자동화 서비스</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803b-9c38-d955e8fca51a" class="">중요한 건 거창한 기능이 아니다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c3-8420-f75f2444df24" class="">특정한 문제 하나를<br />확실하게 해결하는 것이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e9-a2fc-cdbb49dd9efd" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-80fe-9d4c-e5afc02f6209" class="numbered-list" start="2">
+                    <li><strong>자동화 도구 (시간을 줄여주는 구조)</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8026-8cb0-f3ee2bb0afef" class="">사람들은 시간을 아끼기 위해 돈을 쓴다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a4-82ae-f5603a72ebcc" class="">이 구조는<br />그 지점을 정확히 건드린다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8065-99a0-f68eb9dbbb59" class="">데이터 수집 자동화<br />반복 작업 스크립트<br />업무 프로세스 자동화</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-800b-8761-e14ec747d3b3" class="">작게 시작하기 좋고,<br />개발자에게 가장 현실적인 진입점이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f9-89f2-f1fd40dbf3fc" class="">처음에는 내부에서 쓰다가,<br />나중에 외부에 판매하는 방식도 가능하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-800b-aa68-fe3eb24cb267" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-8016-a9d3-d5aebeb312d5" class="numbered-list" start="3">
+                    <li><strong>API / 플랫폼 (기능을 파는 구조)</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a0-a66c-c84a52bc1774" class="">이건 개발자에게 특히 유리한 구조다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ce-9855-ead107002270" class="">특정 기능을 API 형태로 제공하고,<br />사용량 기반으로 수익을 만든다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f0-a922-febf983130e8" class="">인증 / 결제 모듈<br />데이터 처리<br />특정 기능 (이미지, 텍스트, 분석 등)</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8034-8e35-e02520fae04b" class="">이 구조는<br />“결과”가 아니라 “기능” 자체를 판매한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c7-9870-c7487f9bb4d6" class="">잘 만들어지면<br />다른 서비스 위에서 계속 사용된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80fc-9c88-f6b78f5f13ae" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-8080-bf1f-c91634ada27c" class="numbered-list" start="4">
+                    <li><strong>템플릿 / 재사용 가능한 자산</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f0-8523-fa6ac55eabef" class="">이미 우리가 하고 있는 일과 가장 가깝다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80c6-a10e-d879e66b6100" class="bulleted-list">
+                    <li style="list-style-type:disc">웹사이트 템플릿</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-804a-8091-eec0c6c112eb" class="bulleted-list">
+                    <li style="list-style-type:disc">관리자 페이지 구조</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-8050-9219-e8e04964d5b1" class="bulleted-list">
+                    <li style="list-style-type:disc">UI 컴포넌트</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80c0-bf7a-fdadc756d024" class="bulleted-list">
+                    <li style="list-style-type:disc">코드 스니펫</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80de-b738-ec736cffd87a" class="">한 번 만들어두면<br />여러 번 판매할 수 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8058-a7b2-ff53714ce3a6" class="">작게 시작할 수 있고,<br />실패 부담이 낮다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e4-80cb-db7b7b56bc35" class="">하지만 중요한 건<br />“단순한 코드”가 아니라<br />“바로 쓸 수 있는 형태”로 만드는 것이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802d-90ae-c5adc83206ec" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ol type="1" id="32df6e9d-1929-804b-a84e-d0b8bccebea2" class="numbered-list" start="5">
+                    <li><strong>콘텐츠 + 개발 (지식의 구조화)</strong></li>
+                </ol>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8072-8a30-df09c6dd4c93" class="">개발 경험 자체도 자산이 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80c3-b955-d42d7c413c75" class="bulleted-list">
+                    <li style="list-style-type:disc">강의</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-8042-83d4-d24a17c18875" class="bulleted-list">
+                    <li style="list-style-type:disc">전자책</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-8097-b173-c519d7811495" class="bulleted-list">
+                    <li style="list-style-type:disc">튜토리얼</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <ul id="32df6e9d-1929-80da-ab53-ea4a9cf7136d" class="bulleted-list">
+                    <li style="list-style-type:disc">기술 블로그</li>
+                </ul>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8095-a9f8-e423876700cf" class="">이건 단순한 정보 전달이 아니다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8084-8924-ec795193ad2f" class="">“문제를 해결하는 흐름”을<br />다른 사람에게 전달하는 구조다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-800b-88cf-ec9988917438" class="">그리고 이 구조는<br />시간이 지날수록 계속 누적된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-809f-9e4f-de51a1c82372" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h4 id="32df6e9d-1929-8033-9cab-db6afeeb3148" class=""><strong>중요한 기준</strong></h4>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8008-8c25-dd0a0a5079c8" class="">어떤 구조를 선택하든<br />반드시 확인해야 할 기준이 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f1-aae8-fe63ec45dfaa" class="">반복 가능한가<br />내가 없어도 돌아가는가<br />여러 번 판매 가능한가</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80dd-896a-cab8a09f4c7c" class="">이 세 가지가 없다면<br />그건 구조가 아니라 또 다른 노동이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a0-9387-fe75ea6cec4f" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h4 id="32df6e9d-1929-809d-8229-e8839063036e" class=""><strong>현실적인 시작점</strong></h4>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8046-bf9c-e17ed5357877" class="">많은 사람들이<br />“무엇을 만들어야 할지 모르겠다”고 말한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b0-b99c-f94482a812f8" class="">그럴 때는 이렇게 보면 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8099-8123-e2f4322109a1" class="">지금 하고 있는 일에서<br />가장 많이 반복되는 것.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80bb-bb5e-c6bf1a454389" class="">그게 바로<br />첫 번째 구조의 시작점이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8048-9385-c2e0b823325e" class="">완전히 새로운 것을 찾으려고 하지 말고,<br />이미 하고 있는 것을 바꿔라.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8079-b5d2-ffce2caef494" class="">
+                </p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <h1 id="32df6e9d-1929-8063-8bbf-f1c05571b890" class=""><div>챕터8.</div><br>결국 우리는 어떤 삶을 원하는가</h1>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-805f-9d8a-ec0ef4cabddf" class="">우리는 처음에<br />하나의 질문에서 시작했다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8015-8a04-e22ff36e8cff" class="">내가 하는 일이<br />내 삶을 얼마나 윤택하게 만드는가.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80d4-859b-c57349c7194f" class="">여기까지 오면서<br />우리는 많은 것을 이해했다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8029-81d3-cc6addc17291" class="">왜 열심히 일해도<br />삶이 크게 달라지지 않는지,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80eb-b30b-dc314724378d" class="">왜 개발자라는 직업이<br />시간과 강하게 연결되어 있는지,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f5-a7cc-c7b4561dc818" class="">그리고<br />그 구조를 어떻게 바꿀 수 있는지.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-806c-a4ed-e16f61ba6f57" class="">하지만 여전히<br />남아 있는 질문이 있다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80b1-9b6c-ee3530432f58" class="">그래서 우리는<br />왜 돈을 벌려고 하는가.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-802f-b773-ed607e4ee499" class="">이 질문은 단순해 보이지만<br />생각보다 쉽게 답할 수 없다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-807d-9db3-d57a87e20877" class="">더 좋은 집,<br />더 편한 생활,<br />더 많은 선택지.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8021-b698-d481db4ca264" class="">이 모든 것들은 결국<br />하나로 연결된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8047-8218-c3e31140f23b" class="">자유.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f2-8d95-eeca40497b8f" class="">원하는 시간에,<br />원하는 일을,<br />원하는 방식으로 할 수 있는 상태.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-803a-91b7-eb05a07bdcb6" class="">우리가 돈을 원하는 이유는<br />결국 이 자유에 가깝다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f5-ac40-c1bc1e0b2c3c" class="">하지만 여기서<br />한 가지 착각이 생긴다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e6-b578-c64d6f23cf8a" class="">돈이 많아지면<br />자동으로 자유로워질 것이라는 생각.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80be-9f27-f72b1afddf22" class="">현실은 그렇지 않다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8057-9e6d-e6ec841eabd9" class="">구조가 바뀌지 않으면<br />돈이 늘어나도<br />여전히 같은 방식으로 살아가게 된다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-808f-89e3-fee95c890951" class="">더 많은 일을 하고,<br />더 많은 책임을 지고,<br />더 많은 시간을 쓰면서.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80ff-a21b-e70802893b94" class="">그래서 중요한 것은<br />단순히 돈을 버는 것이 아니라,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8017-945f-c187c7de254d" class="">어떤 구조 위에서<br />돈을 만들고 있는가이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8054-a012-e573761501de" class="">이 차이는<br />삶의 방향을 완전히 바꾼다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e4-84e4-fbb88a0f5cd1" class="">우리는 선택해야 한다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80aa-95e4-de46dd82c4a3" class="">지금처럼<br />시간을 팔아서 안정적인 삶을 유지할 것인지,</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80bb-9d34-c85e035d58ef" class="">아니면<br />불확실하더라도 구조를 만들어<br />다른 가능성을 열 것인지.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80df-8e89-dbe9bae0bf03" class="">이 선택에는 정답이 없다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a0-bdf8-dafe202257b5" class="">누군가는 안정이 더 중요하고,<br />누군가는 자유가 더 중요하다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80a8-9c3d-c9120b6cb20a" class="">중요한 것은<br />의도하지 않은 선택을 하지 않는 것이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80c1-b6b7-fdbc6f03d367" class="">흐름에 떠밀려서가 아니라,<br />스스로 이해하고 선택하는 것.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80f4-be3b-f33e2e45e8c3" class="">그게 이 책이 말하고 싶은 전부다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-80e9-bade-f13b1ba066e8" class="">우리는 코드를 짜는 사람이 아니라,<br />삶의 구조를 설계하는 사람이다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8002-9f42-ecc8aef13d8f" class="">우리의 인생을 들여다보면<br />오류가 없는 삶은 없다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8054-8eeb-c7a04554245f" class="">그럼에도 우리는 멈추지 않는다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-805e-9894-d55fbdb49e01" class="">불안함과 흔들림 속에서도<br />자신의 삶을 설계해 나간다는 것,<br />그것만으로 충분히 인생의 오류를 해결한<br />개발자가 아닐까 하는 생각이 든다.</p>
+            </div>
+            <div style="display:contents" dir="auto">
+                <p id="32df6e9d-1929-8025-9154-ec4e486d731f" class="">
+                </p>
+            </div>
+        </div>
+    </article><span class="sans" style="font-size:14px;padding-top:2em"></span>
+</body>
+</html>
